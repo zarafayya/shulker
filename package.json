@@ -1,0 +1,19 @@
+{
+  "name": "shulker",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "prepack": "tsc"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@tsconfig/node21": "^21.0.3",
+    "prettier": "^3.3.0",
+    "prettier-plugin-organize-imports": "^3.2.4",
+    "typescript": "^5.4.5"
+  }
+}
