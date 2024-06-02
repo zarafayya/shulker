@@ -1,3 +1,1 @@
-export function shulker() {
-  return "Hello, world!";
-}
+export * from "./math/index.js";
