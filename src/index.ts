@@ -1,4 +1,4 @@
-/// <reference types="./components.d.ts" />
+/// <reference types="../components.d.ts" />
 
 export * from "./core/index.js";
 export * from "./math/index.js";
