@@ -11,8 +11,8 @@
     "dist",
     "components.d.ts"
   ],
-  "dependencies": {
-    "@minecraft/server": "^1.10.0"
+  "peerDependencies": {
+    "@minecraft/server": "^1.11.0"
   },
   "devDependencies": {
     "@tsconfig/node21": "^21.0.3",
