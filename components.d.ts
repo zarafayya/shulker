@@ -7,9 +7,12 @@ declare module "@minecraft/server" {
     "minecraft:sign": BlockSignComponent;
   };
   type EntityComponents = {
+    "minecraft:add_rider": EntityAddRiderComponent;
+    "minecraft:base_movement": EntityBaseMovementComponent;
     "minecraft:can_climb": EntityCanClimbComponent;
     "minecraft:can_fly": EntityCanFlyComponent;
     "minecraft:can_power_jump": EntityCanPowerJumpComponent;
+    "minecraft:color2": EntityColor2Component;
     "minecraft:color": EntityColorComponent;
     "minecraft:equippable": EntityEquippableComponent;
     "minecraft:fire_immune": EntityFireImmuneComponent;
@@ -42,17 +45,27 @@ declare module "@minecraft/server" {
     "minecraft:movement.hover": EntityMovementHoverComponent;
     "minecraft:movement.jump": EntityMovementJumpComponent;
     "minecraft:movement.skip": EntityMovementSkipComponent;
+    "minecraft:navigation.climb": EntityNavigationClimbComponent;
+    "minecraft:navigation.float": EntityNavigationFloatComponent;
+    "minecraft:navigation.fly": EntityNavigationFlyComponent;
+    "minecraft:navigation.generic": EntityNavigationGenericComponent;
+    "minecraft:navigation.hover": EntityNavigationHoverComponent;
+    "minecraft:navigation.walk": EntityNavigationWalkComponent;
     "minecraft:onfire": EntityOnFireComponent;
     "minecraft:projectile": EntityProjectileComponent;
     "minecraft:push_through": EntityPushThroughComponent;
+    "minecraft:rideable": EntityRideableComponent;
+    "minecraft:riding": EntityRidingComponent;
     "minecraft:scale": EntityScaleComponent;
     "minecraft:skin_id": EntitySkinIdComponent;
+    "minecraft:tamemount": EntityTameMountComponent;
     "minecraft:type_family": EntityTypeFamilyComponent;
     "minecraft:variant": EntityVariantComponent;
     "minecraft:wants_jockey": EntityWantsJockeyComponent;
   };
   type ItemComponents = {
     "minecraft:cooldown": ItemCooldownComponent;
+    "minecraft:enchantable": ItemEnchantableComponent;
     "minecraft:durability": ItemDurabilityComponent;
     "minecraft:food": ItemFoodComponent;
   };
