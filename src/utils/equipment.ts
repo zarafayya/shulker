@@ -6,13 +6,15 @@ import {
   world,
 } from "@minecraft/server";
 
-const components = new Map<string, EntityEquippableComponent>();
-
-world.afterEvents.playerLeave.subscribe(({ playerId }) => {
-  components.delete(playerId);
-});
+let components: Map<string, EntityEquippableComponent>;
 
 function getEquippable(player: Player) {
+  if (!components) {
+    components = new Map();
+    world.afterEvents.playerLeave.subscribe(({ playerId }) => {
+      components.delete(playerId);
+    });
+  }
   let component = components.get(player.id);
   if (!component) {
     component = player.getComponent("minecraft:equippable");
