@@ -2,7 +2,7 @@ import { system } from "@minecraft/server";
 
 const runIds = new Map<string, number>();
 
-export const interval = Object.freeze({
+export const interval = {
   /**
    * Runs a set of code on an interval.
    * @param id Interval id
@@ -36,4 +36,4 @@ export const interval = Object.freeze({
   exists(id: string) {
     return runIds.has(id);
   },
-});
+} as const;

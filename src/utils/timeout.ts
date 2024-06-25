@@ -2,7 +2,7 @@ import { system } from "@minecraft/server";
 
 const runIds = new Map<string, number>();
 
-export const timeout = Object.freeze({
+export const timeout = {
   /**
    * Runs a set of code at a future time specified by tickDelay
    * @param id Timeout id
@@ -37,4 +37,4 @@ export const timeout = Object.freeze({
   exists(id: string) {
     return runIds.has(id);
   },
-});
+} as const;

@@ -3,7 +3,7 @@ import { ScriptEventCommandMessageAfterEvent, system } from "@minecraft/server";
 type ScriptEventHandler = (event: ScriptEventCommandMessageAfterEvent) => void;
 let events: Map<string, ScriptEventHandler>;
 
-export const scriptEvents = Object.freeze({
+export const scriptEvents = {
   /**
    * Subscribe to a scriptevent
    * @param id Scriptevent id
@@ -28,4 +28,4 @@ export const scriptEvents = Object.freeze({
   unsubscribe(id: string) {
     events.delete(id);
   },
-});
+} as const;

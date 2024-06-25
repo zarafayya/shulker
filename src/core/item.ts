@@ -56,12 +56,12 @@ export type ScriptItemUseEvent = ScriptItemEvent & {
 
 type TickEvent = (player: Player) => void;
 const playerEquipments = new Map<string, Array<ItemStack | undefined>>();
-const equipmentSlots = Object.values(EquipmentSlot);
 
 export const ScriptItem = {
   register(itemList: ScriptItem[]) {
     const items = new Map<string, ScriptItem>();
     const tickEvents: TickEvent[] = [];
+    const equipmentSlots = Object.values(EquipmentSlot);
 
     for (const item of itemList) {
       items.set(item.identifier, item);
