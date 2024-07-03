@@ -34,7 +34,7 @@ export const timeout = {
    * Check if a timeout with the specified id exists
    * @param id Timeout id
    */
-  exists(id: string) {
+  has(id: string) {
     return runIds.has(id);
   },
 } as const;

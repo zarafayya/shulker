@@ -33,7 +33,7 @@ export const interval = {
    * Check if an interval with the specified id exists
    * @param id Interval id
    */
-  exists(id: string) {
+  has(id: string) {
     return runIds.has(id);
   },
 } as const;
