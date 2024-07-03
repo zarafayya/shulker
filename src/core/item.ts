@@ -66,7 +66,7 @@ export const ScriptItem = {
     for (const item of itemList) {
       items.set(item.identifier, item);
       if (item.onTick) {
-        tickEvents.push(item.onTick);
+        tickEvents.push(item.onTick.bind(item));
       }
     }
 
