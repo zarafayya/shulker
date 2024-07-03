@@ -14,9 +14,9 @@ import { getAllPlayers } from "../utils/players.js";
 
 export type ScriptItem = {
   readonly identifier: string;
-  onTick?(player: Player): void;
   onBreakBlock?(event: ScriptItemBreakBlockEvent): void;
   onEquip?(event: ScriptItemEquipEvent): void;
+  onTick?(event: ScriptItemEquipEvent): void;
   onUnequip?(event: ScriptItemEquipEvent): void;
   onHit?(event: ScriptItemHitEvent): void;
   onUseOn?(event: ScriptItemUseOnEvent): void;
@@ -65,9 +65,6 @@ export const ScriptItem = {
 
     for (const item of itemList) {
       items.set(item.identifier, item);
-      if (item.onTick) {
-        tickEvents.push(item.onTick.bind(item));
-      }
     }
 
     tickEvents.unshift((player) => {
@@ -80,10 +77,8 @@ export const ScriptItem = {
         const slot = equipmentSlots[i];
         const prev = prevEquipments[i];
         const current = currentEquipments[i];
-        if (prev?.typeId === current?.typeId) {
-          continue;
-        }
-        if (prev) {
+        const isChanged = prev?.typeId !== current?.typeId;
+        if (prev && isChanged) {
           items.get(prev.typeId)?.onUnequip?.({
             player,
             itemStack: prev,
@@ -91,7 +86,14 @@ export const ScriptItem = {
           });
         }
         if (current) {
-          items.get(current.typeId)?.onEquip?.({
+          if (isChanged) {
+            items.get(current.typeId)?.onEquip?.({
+              player,
+              itemStack: current,
+              slot,
+            });
+          }
+          items.get(current.typeId)?.onTick?.({
             player,
             itemStack: current,
             slot,
