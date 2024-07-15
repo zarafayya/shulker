@@ -4,4 +4,5 @@ export * from "./local_position.js";
 export * from "./players.js";
 export * from "./scriptevents.js";
 export * from "./sleep.js";
+export * from "./time.js";
 export * from "./timeout.js";
