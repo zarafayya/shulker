@@ -21,7 +21,7 @@ export const timeEvents = {
           event(current, prev === -1);
         }
         prev = current;
-      }, 20);
+      });
     }
     events.add(handler);
   },
