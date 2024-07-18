@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "prepack": "tsc"
+    "prepack": "tsc && bun run scripts/prepack.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@tsconfig/node21": "^21.0.3",
+    "@types/bun": "^1.1.6",
     "prettier": "^3.3.0",
     "prettier-plugin-organize-imports": "^3.2.4",
     "typescript": "^5.4.5",
