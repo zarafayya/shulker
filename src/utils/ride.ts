@@ -9,7 +9,7 @@ type RideEventHandler = (event: RideEvent) => void;
 
 const rideMap: Map<Entity, EntityRideableComponent> = new Map();
 const rideEvents = {
-  onRide: new Set<RideEventHandler>(),
+  onMount: new Set<RideEventHandler>(),
   onDismount: new Set<RideEventHandler>(),
 };
 
@@ -23,7 +23,7 @@ system.runInterval(() => {
   for (const rideComponent of rideComponents) {
     for (const rider of rideComponent.getRiders()) {
       if (rideMap.has(rider)) continue;
-      rideEvents.onRide.forEach((f) => f({ rider, ride: rideComponent.entity }));
+      rideEvents.onMount.forEach((f) => f({ rider, ride: rideComponent.entity }));
       rideMap.set(rider, rideComponent);
     }
   }
@@ -40,9 +40,9 @@ system.runInterval(() => {
 world.beforeEvents.entityRemove.subscribe(({ removedEntity }) => rideMap.delete(removedEntity));
 
 export const rideEvent = {
-  onRide: {
-    subscribe: (handler: RideEventHandler) => rideEvents.onRide.add(handler),
-    unsubscribe: (handler: RideEventHandler) => rideEvents.onRide.delete(handler),
+  onMount: {
+    subscribe: (handler: RideEventHandler) => rideEvents.onMount.add(handler),
+    unsubscribe: (handler: RideEventHandler) => rideEvents.onMount.delete(handler),
   },
   onDismount: {
     subscribe: (handler: RideEventHandler) => rideEvents.onDismount.add(handler),
