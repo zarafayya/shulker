@@ -29,14 +29,10 @@ system.runInterval(() => {
   }
 
   rideMap.forEach((rideComp, rider) => {
-    if (!rideComp.isValid()) {
+    if (!rideComp.isValid() || !rideComp.getRiders().some((r) => r.id === rider.id)) {
       rideEvents.onDismount.forEach((f) => f({ rider, ride: rideComp.entity }));
       rideMap.delete(rider);
       return;
-    }
-    if (!rideComp.getRiders().some((r) => r.id === rider.id)) {
-      rideEvents.onDismount.forEach((f) => f({ rider, ride: rideComp.entity }));
-      rideMap.delete(rider);
     }
   });
 }, 2);
