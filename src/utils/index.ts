@@ -1,3 +1,4 @@
+export * from "./active_dimensions.js";
 export * from "./equipment.js";
 export * from "./interval.js";
 export * from "./local_position.js";
