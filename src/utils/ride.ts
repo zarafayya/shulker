@@ -1,4 +1,5 @@
 import { Entity, EntityRideableComponent, system, world } from "@minecraft/server";
+import { getActiveDimensions } from "./active_dimensions.js";
 
 export type MountEvent = {
   rider: Entity;
@@ -13,15 +14,11 @@ const mountEvents = {
   onDismount: new Set<MountEventHandler>(),
 };
 
-const dimensions = ["overworld", "nether", "the_end"].map((dimension) =>
-  world.getDimension(dimension),
-);
-
 function createListener() {
   return system.runInterval(() => {
-    const rideComponents = dimensions
+    const rideComponents = [...getActiveDimensions()]
       .flatMap((dimension) => dimension.getEntities({ families: ["mob"] }))
-      .map((e) => e.getComponent("minecraft:rideable") as EntityRideableComponent)
+      .map((e) => e.getComponent("minecraft:rideable"))
       .filter((component) => component?.isValid());
 
     for (const rideComponent of rideComponents) {
@@ -60,7 +57,7 @@ world.beforeEvents.entityRemove.subscribe(({ removedEntity }) => rideMap.delete(
 /**
  * Listens to events related to mounting and dismounting rideable entities.
  */
-export const mountEvent = {
+export const rideEvent = {
   /**
    * Events related to mounting rideable entities.
    */
