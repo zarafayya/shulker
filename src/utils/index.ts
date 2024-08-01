@@ -3,6 +3,7 @@ export * from "./equipment.js";
 export * from "./interval.js";
 export * from "./local_position.js";
 export * from "./players.js";
+export * from "./projectile.js";
 export * from "./ride.js";
 export * from "./scriptevents.js";
 export * from "./sleep.js";
