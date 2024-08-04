@@ -54,60 +54,51 @@ export type ScriptItemUseEvent = ScriptItemEvent & {
   useDuration: number;
 };
 
-type TickEvent = (player: Player) => void;
-const playerEquipments = new Map<string, Array<ItemStack | undefined>>();
-
 export const ScriptItem = {
   register(itemList: ScriptItem[]) {
     const items = new Map<string, ScriptItem>();
-    const tickEvents: TickEvent[] = [];
+    const playerEquipments = new Map<string, Array<ItemStack | undefined>>();
     const equipmentSlots = Object.values(EquipmentSlot);
 
     for (const item of itemList) {
       items.set(item.identifier, item);
     }
 
-    tickEvents.unshift((player) => {
-      const prevEquipments = playerEquipments.get(player.id) ?? [];
-      const currentEquipments = [];
-      for (const slot of equipmentSlots) {
-        currentEquipments.push(getEquipment(player, slot));
-      }
-      for (let i = 0; i < equipmentSlots.length; i++) {
-        const slot = equipmentSlots[i];
-        const prev = prevEquipments[i];
-        const current = currentEquipments[i];
-        const isChanged = prev?.typeId !== current?.typeId;
-        if (prev && isChanged) {
-          items.get(prev.typeId)?.onUnequip?.({
-            player,
-            itemStack: prev,
-            slot,
-          });
+    system.runInterval(() => {
+      for (const player of getAllPlayers()) {
+        const prevEquipments = playerEquipments.get(player.id) ?? [];
+        const currentEquipments = [];
+        for (const slot of equipmentSlots) {
+          currentEquipments.push(getEquipment(player, slot));
         }
-        if (current) {
-          if (isChanged) {
-            items.get(current.typeId)?.onEquip?.({
+        for (let i = 0; i < equipmentSlots.length; i++) {
+          const slot = equipmentSlots[i];
+          const prev = prevEquipments[i];
+          const current = currentEquipments[i];
+          const isChanged = prev?.typeId !== current?.typeId;
+          if (prev && isChanged) {
+            items.get(prev.typeId)?.onUnequip?.({
+              player,
+              itemStack: prev,
+              slot,
+            });
+          }
+          if (current) {
+            if (isChanged) {
+              items.get(current.typeId)?.onEquip?.({
+                player,
+                itemStack: current,
+                slot,
+              });
+            }
+            items.get(current.typeId)?.onTick?.({
               player,
               itemStack: current,
               slot,
             });
           }
-          items.get(current.typeId)?.onTick?.({
-            player,
-            itemStack: current,
-            slot,
-          });
         }
-      }
-      playerEquipments.set(player.id, currentEquipments);
-    });
-
-    system.runInterval(() => {
-      for (const event of tickEvents) {
-        for (const player of getAllPlayers()) {
-          event(player);
-        }
+        playerEquipments.set(player.id, currentEquipments);
       }
     });
 
