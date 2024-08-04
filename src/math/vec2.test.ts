@@ -69,6 +69,11 @@ describe("Vec2", () => {
     expect(result.y).toBeCloseTo(0.894, 2);
   });
 
+  it("calculates the distance between two vectors", () => {
+    const result = v1.distanceTo(v2);
+    expect(result).toBe(4.242640687119285);
+  })
+
   it("converts a vector to a string with default options", () => {
     const vector = new Vec2(1, 2);
     const expectedString = "1.00 2.00";

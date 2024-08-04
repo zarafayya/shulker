@@ -102,6 +102,16 @@ export class Vec3 implements Vector3 {
   }
 
   /**
+   * Calculates the distance between this vector and the other vector.
+   * 
+   * @param other - The other vector to calculate the distance to.
+   * @returns The distance between the two vectors.
+   */
+  distanceTo(other: Vector3): number {
+    return this.subtract(other).magnitude();
+  }
+
+  /**
    * Returns a new vector object with the floor value of each axis of the current vector.
    *
    * @returns A new vector object with the floor value of each axis.
