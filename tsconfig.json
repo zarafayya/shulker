@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node21",
+  "extends": "@tsconfig/node-lts",
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
