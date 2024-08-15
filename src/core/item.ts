@@ -19,6 +19,7 @@ export type ScriptItem = {
   onTick?(event: ScriptItemEquipEvent): void;
   onUnequip?(event: ScriptItemEquipEvent): void;
   onHit?(event: ScriptItemHitEvent): void;
+  onKill?(event: ScriptItemHitEvent): void;
   onUseOn?(event: ScriptItemUseOnEvent): void;
   onStartUse?(event: ScriptItemUseEvent): void;
   onStopUse?(event: ScriptItemUseEvent): void;
@@ -129,6 +130,22 @@ export const ScriptItem = {
         player: damagingEntity,
         itemStack: equipment,
         victim: hitEntity,
+      });
+    });
+
+    world.afterEvents.entityDie.subscribe(({ damageSource, deadEntity }) => {
+      const player = damageSource.damagingEntity;
+      if (!(player instanceof Player)) {
+        return;
+      }
+      const equipment = getEquipment(player, EquipmentSlot.Mainhand);
+      if (!equipment) {
+        return;
+      }
+      items.get(equipment.typeId)?.onHit?.({
+        player,
+        itemStack: equipment,
+        victim: deadEntity,
       });
     });
 
