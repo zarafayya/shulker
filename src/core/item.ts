@@ -14,9 +14,10 @@ import { getAllPlayers } from "../utils/players.js";
 
 export type ScriptItem = {
   readonly identifier: string;
+  onTick?(player: Player): void;
   onBreakBlock?(event: ScriptItemBreakBlockEvent): void;
   onEquip?(event: ScriptItemEquipEvent): void;
-  onTick?(event: ScriptItemEquipEvent): void;
+  onHold?(event: ScriptItemEquipEvent): void;
   onUnequip?(event: ScriptItemEquipEvent): void;
   onHit?(event: ScriptItemHitEvent): void;
   onKill?(event: ScriptItemHitEvent): void;
@@ -67,6 +68,9 @@ export const ScriptItem = {
 
     system.runInterval(() => {
       for (const player of getAllPlayers()) {
+        for (const [, item] of items) {
+          item.onTick?.(player);
+        }
         const prevEquipments = playerEquipments.get(player.id) ?? [];
         const currentEquipments = [];
         for (const slot of equipmentSlots) {
@@ -92,7 +96,7 @@ export const ScriptItem = {
                 slot,
               });
             }
-            items.get(current.typeId)?.onTick?.({
+            items.get(current.typeId)?.onHold?.({
               player,
               itemStack: current,
               slot,
