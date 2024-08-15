@@ -146,7 +146,7 @@ export const ScriptItem = {
       if (!equipment) {
         return;
       }
-      items.get(equipment.typeId)?.onHit?.({
+      items.get(equipment.typeId)?.onKill?.({
         player,
         itemStack: equipment,
         victim: deadEntity,
