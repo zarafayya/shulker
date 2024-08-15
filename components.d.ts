@@ -8,6 +8,7 @@ declare module "@minecraft/server" {
   };
   type EntityComponents = {
     "minecraft:add_rider": EntityAddRiderComponent;
+    "minecraft:ageable": EntityAgeableComponent;
     "minecraft:base_movement": EntityBaseMovementComponent;
     "minecraft:can_climb": EntityCanClimbComponent;
     "minecraft:can_fly": EntityCanFlyComponent;
@@ -37,14 +38,19 @@ declare module "@minecraft/server" {
     "minecraft:is_stunned": EntityIsStunnedComponent;
     "minecraft:is_tamed": EntityIsTamedComponent;
     "minecraft:item": EntityItemComponent;
+    "minecraft:lava_movement": EntityLavaMovementComponent;
+    "minecraft:leashable": EntityLeashableComponent;
     "minecraft:mark_variant": EntityMarkVariantComponent;
     "minecraft:movement.amphibious": EntityMovementAmphibiousComponent;
     "minecraft:movement.basic": EntityMovementBasicComponent;
+    "minecraft:movement": EntityMovementComponent;
     "minecraft:movement.fly": EntityMovementFlyComponent;
     "minecraft:movement.generic": EntityMovementGenericComponent;
+    "minecraft:movement.glide": EntityMovementGlideComponent;
     "minecraft:movement.hover": EntityMovementHoverComponent;
     "minecraft:movement.jump": EntityMovementJumpComponent;
     "minecraft:movement.skip": EntityMovementSkipComponent;
+    "minecraft:movement.sway": EntityMovementSwayComponent;
     "minecraft:navigation.climb": EntityNavigationClimbComponent;
     "minecraft:navigation.float": EntityNavigationFloatComponent;
     "minecraft:navigation.fly": EntityNavigationFlyComponent;
@@ -58,15 +64,17 @@ declare module "@minecraft/server" {
     "minecraft:riding": EntityRidingComponent;
     "minecraft:scale": EntityScaleComponent;
     "minecraft:skin_id": EntitySkinIdComponent;
+    "minecraft:tameable": EntityTameableComponent;
     "minecraft:tamemount": EntityTameMountComponent;
     "minecraft:type_family": EntityTypeFamilyComponent;
+    "minecraft:underwater_movement": EntityUnderwaterMovementComponent;
     "minecraft:variant": EntityVariantComponent;
     "minecraft:wants_jockey": EntityWantsJockeyComponent;
   };
   type ItemComponents = {
     "minecraft:cooldown": ItemCooldownComponent;
-    "minecraft:enchantable": ItemEnchantableComponent;
     "minecraft:durability": ItemDurabilityComponent;
+    "minecraft:enchantable": ItemEnchantableComponent;
     "minecraft:food": ItemFoodComponent;
   };
 
