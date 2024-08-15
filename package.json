@@ -12,7 +12,7 @@
     "components.d.ts"
   ],
   "peerDependencies": {
-    "@minecraft/server": "^1.11.0"
+    "@minecraft/server": "^1.13.0"
   },
   "devDependencies": {
     "@tsconfig/node-lts": "^20.1.3",
