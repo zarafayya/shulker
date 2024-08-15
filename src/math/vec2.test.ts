@@ -72,7 +72,7 @@ describe("Vec2", () => {
   it("calculates the distance between two vectors", () => {
     const result = v1.distanceTo(v2);
     expect(result).toBe(4.242640687119285);
-  })
+  });
 
   it("converts a vector to a string with default options", () => {
     const vector = new Vec2(1, 2);

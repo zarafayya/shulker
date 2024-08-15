@@ -103,7 +103,7 @@ export class Vec3 implements Vector3 {
 
   /**
    * Calculates the distance between this vector and the other vector.
-   * 
+   *
    * @param other - The other vector to calculate the distance to.
    * @returns The distance between the two vectors.
    */
