@@ -1,4 +1,10 @@
-import { Entity, EntityDamageSource, EntityInitializationCause, world } from "@minecraft/server";
+import {
+  Entity,
+  EntityDamageSource,
+  EntityInitializationCause,
+  system,
+  world,
+} from "@minecraft/server";
 import { getActiveDimensions } from "../utils/active_dimensions.js";
 
 export type ScriptEntity = {
@@ -59,19 +65,18 @@ export const ScriptEntity = {
   register(entityList: ScriptEntity[]) {
     const entities = new Map<string, ScriptEntity>();
 
-    for (const entity of entityList) {
-      entities.set(entity.identifier, entity);
-    }
-
-    for (const dimension of getActiveDimensions()) {
-      for (const { identifier, onTick } of entityList) {
-        if (!onTick) {
-          continue;
-        }
-        for (const entity of dimension.getEntities({ type: identifier })) {
-          onTick({ entity });
-        }
+    for (const e of entityList) {
+      entities.set(e.identifier, e);
+      if (!e.onTick) {
+        continue;
       }
+      system.runInterval(() => {
+        for (const dimension of getActiveDimensions()) {
+          for (const entity of dimension.getEntities({ type: e.identifier })) {
+            e.onTick?.({ entity });
+          }
+        }
+      });
     }
 
     world.afterEvents.entityDie.subscribe(({ deadEntity, damageSource }) => {
