@@ -3,11 +3,29 @@ import { getActiveDimensions } from "../utils/active_dimensions.js";
 
 export type ScriptEntity = {
   readonly identifier: string;
+  /**
+   * Called every tick
+   */
   onTick?(event: ScriptEntityEvent): void;
+  /**
+   * Called when the entity dies
+   */
   onDie?(event: ScriptEntityDieEvent): void;
+  /**
+   * Called when the entity hits another entity
+   */
   onHit?(event: ScriptEntityHitEvent): void;
+  /**
+   * Called when the entity is hurt
+   */
   onHurt?(event: ScriptEntityHurtEvent): void;
+  /**
+   * Called when the entity spawns
+   */
   onSpawn?(event: ScriptEntitySpawnEvent): void;
+  /**
+   * Called when the entity's health changes
+   */
   onHealthChanged?(event: ScriptEntityHealthChangedEvent): void;
 };
 

@@ -14,17 +14,53 @@ import { getAllPlayers } from "../utils/players.js";
 
 export type ScriptItem = {
   readonly identifier: string;
+  /**
+   * Called every tick
+   */
   onTick?(player: Player): void;
+  /**
+   * Called when player breaks block with this item
+   */
   onBreakBlock?(event: ScriptItemBreakBlockEvent): void;
+  /**
+   * Called when player equips this item
+   */
   onEquip?(event: ScriptItemEquipEvent): void;
+  /**
+   * Called when player holds this item in any EquipmentSlot
+   */
   onHold?(event: ScriptItemEquipEvent): void;
+  /**
+   * Called when player unequips this item
+   */
   onUnequip?(event: ScriptItemEquipEvent): void;
+  /**
+   * Called when player hits an entity with this item
+   */
   onHit?(event: ScriptItemHitEvent): void;
+  /**
+   * Called when player kills an entity with this item
+   */
   onKill?(event: ScriptItemHitEvent): void;
+  /**
+   * Called when item is used on block
+   */
   onUseOn?(event: ScriptItemUseOnEvent): void;
+  /**
+   * Called when the item starts charging
+   */
   onStartUse?(event: ScriptItemUseEvent): void;
+  /**
+   * Called when the item stops charging
+   */
   onStopUse?(event: ScriptItemUseEvent): void;
+  /**
+   * Called when the item is released from charging
+   */
   onReleaseUse?(event: ScriptItemUseEvent): void;
+  /**
+   * Called when the item completes charging
+   */
   onCompleteUse?(event: ScriptItemUseEvent): void;
 };
 
