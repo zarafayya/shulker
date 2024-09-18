@@ -4,6 +4,7 @@ declare module "@minecraft/server" {
   type BlockComponents = {
     "minecraft:inventory": BlockInventoryComponent;
     "minecraft:piston": BlockPistonComponent;
+    "minecraft:record_player": BlockRecordPlayerComponent;
     "minecraft:sign": BlockSignComponent;
   };
   type EntityComponents = {
@@ -64,12 +65,16 @@ declare module "@minecraft/server" {
     "minecraft:riding": EntityRidingComponent;
     "minecraft:scale": EntityScaleComponent;
     "minecraft:skin_id": EntitySkinIdComponent;
+    "minecraft:strength": EntityStrengthComponent;
     "minecraft:tameable": EntityTameableComponent;
     "minecraft:tamemount": EntityTameMountComponent;
     "minecraft:type_family": EntityTypeFamilyComponent;
     "minecraft:underwater_movement": EntityUnderwaterMovementComponent;
     "minecraft:variant": EntityVariantComponent;
     "minecraft:wants_jockey": EntityWantsJockeyComponent;
+  };
+  type PlayerComponents = EntityComponents & {
+    "minecraft:cursor_inventory": PlayerCursorInventoryComponent;
   };
   type ItemComponents = {
     "minecraft:cooldown": ItemCooldownComponent;
@@ -84,6 +89,10 @@ declare module "@minecraft/server" {
   interface Entity {
     getComponent<K extends keyof EntityComponents>(component: K): EntityComponents[K];
     hasComponent<K extends keyof EntityComponents>(component: K): boolean;
+  }
+  interface Player {
+    getComponent<K extends keyof PlayerComponents>(component: K): PlayerComponents[K];
+    hasComponent<K extends keyof PlayerComponents>(component: K): boolean;
   }
   interface ItemStack {
     getComponent<K extends keyof ItemComponents>(component: K): ItemComponents[K];
