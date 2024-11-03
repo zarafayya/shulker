@@ -1,4 +1,4 @@
-import "@minecraft/server";
+import { SpellEffects } from "bedrock-ts";
 
 declare module "@minecraft/server" {
   type BlockComponents = {
@@ -97,5 +97,33 @@ declare module "@minecraft/server" {
   interface ItemStack {
     getComponent<K extends keyof ItemComponents>(component: K): ItemComponents[K];
     hasComponent<K extends keyof ItemComponents>(component: K): boolean;
+  }
+
+  interface Entity {
+    addEffect(
+      effectType: SpellEffects,
+      duration: number,
+      options?: EntityEffectOptions,
+    ): Effect | undefined;
+    removeEffect(effectType: SpellEffects): void;
+  }
+
+  type CameraPresets =
+    | "minecraft:first_person"
+    | "minecraft:free"
+    | "minecraft:third_person"
+    | "minecraft:third_person_front"
+    | "minecraft:follow_orbit";
+
+  interface Camera {
+    setCamera(
+      cameraPreset: CameraPresets,
+      setOptions?:
+        | CameraDefaultOptions
+        | CameraSetFacingOptions
+        | CameraSetLocationOptions
+        | CameraSetPosOptions
+        | CameraSetRotOptions,
+    ): void;
   }
 }
