@@ -8,14 +8,14 @@ declare module "@minecraft/server" {
     "minecraft:sign": BlockSignComponent;
   };
   type EntityComponents = {
-    "minecraft:add_rider": EntityAddRiderComponent;
+    "minecraft:addrider": EntityAddRiderComponent;
     "minecraft:ageable": EntityAgeableComponent;
-    "minecraft:base_movement": EntityBaseMovementComponent;
+    "minecraft:breathable": EntityBreathableComponent;
     "minecraft:can_climb": EntityCanClimbComponent;
     "minecraft:can_fly": EntityCanFlyComponent;
     "minecraft:can_power_jump": EntityCanPowerJumpComponent;
-    "minecraft:color2": EntityColor2Component;
     "minecraft:color": EntityColorComponent;
+    "minecraft:color2": EntityColor2Component;
     "minecraft:equippable": EntityEquippableComponent;
     "minecraft:fire_immune": EntityFireImmuneComponent;
     "minecraft:floats_in_liquid": EntityFloatsInLiquidComponent;
@@ -42,9 +42,9 @@ declare module "@minecraft/server" {
     "minecraft:lava_movement": EntityLavaMovementComponent;
     "minecraft:leashable": EntityLeashableComponent;
     "minecraft:mark_variant": EntityMarkVariantComponent;
+    "minecraft:movement": EntityMovementComponent;
     "minecraft:movement.amphibious": EntityMovementAmphibiousComponent;
     "minecraft:movement.basic": EntityMovementBasicComponent;
-    "minecraft:movement": EntityMovementComponent;
     "minecraft:movement.fly": EntityMovementFlyComponent;
     "minecraft:movement.generic": EntityMovementGenericComponent;
     "minecraft:movement.glide": EntityMovementGlideComponent;
