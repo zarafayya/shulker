@@ -2,6 +2,8 @@ import {
   Entity,
   EntityDamageSource,
   EntityInitializationCause,
+  ItemStack,
+  Player,
   system,
   world,
 } from "@minecraft/server";
@@ -25,6 +27,10 @@ export type ScriptEntity = {
    * Called when the entity is hurt
    */
   onHurt?(event: ScriptEntityHurtEvent): void;
+  /**
+   * Called when player interacts with the entity
+   */
+  onInteract?(event: ScriptEntityInteractEvent): void;
   /**
    * Called when the entity spawns
    */
@@ -50,6 +56,12 @@ export type ScriptEntityHitEvent = ScriptEntityEvent & {
 export type ScriptEntityHurtEvent = ScriptEntityEvent & {
   damage: number;
   damageSource: EntityDamageSource;
+};
+
+export type ScriptEntityInteractEvent = ScriptEntityEvent & {
+  player: Player;
+  beforeItemStack?: ItemStack;
+  itemStack?: ItemStack;
 };
 
 export type ScriptEntitySpawnEvent = ScriptEntityEvent & {
@@ -88,6 +100,13 @@ export const ScriptEntity = {
     world.afterEvents.entityHurt.subscribe(({ hurtEntity, damage, damageSource }) => {
       entities.get(hurtEntity.typeId)?.onHurt?.({ entity: hurtEntity, damage, damageSource });
     });
+    world.afterEvents.playerInteractWithEntity.subscribe(
+      ({ player, target, beforeItemStack, itemStack }) => {
+        entities
+          .get(target.typeId)
+          ?.onInteract?.({ entity: target, player, beforeItemStack, itemStack });
+      },
+    );
     world.afterEvents.entitySpawn.subscribe((event) => {
       entities.get(event.entity.typeId)?.onSpawn?.(event);
     });
