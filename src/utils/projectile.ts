@@ -4,6 +4,7 @@ import { Vec3 } from "../math/vec3.js";
 export type ShootProjectileOptions = {
   power?: number;
   gravity?: number;
+  inertia?: number;
   location?: Vector3;
   direction?: Vector3;
 };
@@ -16,6 +17,7 @@ export function shootProjectile(
   const {
     power = 1,
     gravity = 0.05,
+    inertia = 0.99,
     location = shooter.getHeadLocation(),
     direction = shooter.getViewDirection(),
   } = options ?? {};
@@ -31,7 +33,8 @@ export function shootProjectile(
     if (!entity.isValid()) {
       return system.clearRun(runId);
     }
+    entity.clearVelocity();
     entity.applyImpulse(velocity);
-    velocity = velocity.subtract(g);
+    velocity = velocity.subtract(g).scale(inertia);
   });
 }
