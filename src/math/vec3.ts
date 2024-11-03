@@ -53,6 +53,17 @@ export class Vec3 implements Vector3 {
   static readonly Zero = new Vec3(0, 0, 0);
 
   /**
+   * Converts the yaw value into a direction vector.
+   *
+   * @param yaw - The yaw value to convert to a vector.
+   * @returns A direction vector based on the yaw value.
+   */
+  static fromYaw(yaw: number) {
+    const rad = (yaw * Math.PI) / 180;
+    return new Vec3(-Math.sin(rad), 0, Math.cos(rad));
+  }
+
+  /**
    * Checks if the current vector is equal to another vector.
    *
    * @param other - The vector to compare against.
