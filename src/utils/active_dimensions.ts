@@ -1,6 +1,26 @@
-import { Dimension, world } from "@minecraft/server";
+import { Dimension, system, world } from "@minecraft/server";
 
 let dimensions: Set<Dimension>;
+
+function registerEvents() {
+  world.afterEvents.playerDimensionChange.subscribe(({ fromDimension, toDimension }) => {
+    if (fromDimension.getPlayers().length === 0) {
+      dimensions.delete(fromDimension);
+    }
+    dimensions.add(toDimension);
+  });
+  world.afterEvents.playerSpawn.subscribe(({ player, initialSpawn }) => {
+    if (initialSpawn) {
+      dimensions.add(player.dimension);
+    }
+  });
+  world.beforeEvents.playerLeave.subscribe(({ player }) => {
+    const dimension = player.dimension;
+    if (dimension.getPlayers().length === 0) {
+      dimensions.delete(dimension);
+    }
+  });
+}
 
 /**
  * Get all dimensions that currently have players in them
@@ -9,23 +29,7 @@ let dimensions: Set<Dimension>;
 export function getActiveDimensions() {
   if (!dimensions) {
     dimensions = new Set(world.getAllPlayers().map((p) => p.dimension));
-    world.afterEvents.playerDimensionChange.subscribe(({ fromDimension, toDimension }) => {
-      if (fromDimension.getPlayers().length === 0) {
-        dimensions.delete(fromDimension);
-      }
-      dimensions.add(toDimension);
-    });
-    world.afterEvents.playerSpawn.subscribe(({ player, initialSpawn }) => {
-      if (initialSpawn) {
-        dimensions.add(player.dimension);
-      }
-    });
-    world.beforeEvents.playerLeave.subscribe(({ player }) => {
-      const dimension = player.dimension;
-      if (dimension.getPlayers().length === 0) {
-        dimensions.delete(dimension);
-      }
-    });
+    system.run(registerEvents);
   }
   return dimensions;
 }

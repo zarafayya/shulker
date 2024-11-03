@@ -1,6 +1,17 @@
-import { Player, world } from "@minecraft/server";
+import { Player, system, world } from "@minecraft/server";
 
 let players: Set<Player>;
+
+function registerEvents() {
+  world.afterEvents.playerSpawn.subscribe(({ player, initialSpawn }) => {
+    if (initialSpawn) {
+      players.add(player);
+    }
+  });
+  world.beforeEvents.playerLeave.subscribe(({ player }) => {
+    players.delete(player);
+  });
+}
 
 /**
  * Optimized way of calling `world.getAllPlayers()`
@@ -9,14 +20,7 @@ let players: Set<Player>;
 export function getAllPlayers() {
   if (!players) {
     players = new Set(world.getAllPlayers());
-    world.afterEvents.playerSpawn.subscribe(({ player, initialSpawn }) => {
-      if (initialSpawn) {
-        players.add(player);
-      }
-    });
-    world.beforeEvents.playerLeave.subscribe(({ player }) => {
-      players.delete(player);
-    });
+    system.run(registerEvents);
   }
   return players;
 }

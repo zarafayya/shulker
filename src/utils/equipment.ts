@@ -3,17 +3,22 @@ import {
   EquipmentSlot,
   ItemStack,
   Player,
+  system,
   world,
 } from "@minecraft/server";
 
 let components: Map<string, EntityEquippableComponent>;
 
+function registerEvents() {
+  world.afterEvents.playerLeave.subscribe(({ playerId }) => {
+    components.delete(playerId);
+  });
+}
+
 function getEquippable(player: Player) {
   if (!components) {
     components = new Map();
-    world.afterEvents.playerLeave.subscribe(({ playerId }) => {
-      components.delete(playerId);
-    });
+    system.run(registerEvents);
   }
   let component = components.get(player.id);
   if (!component) {

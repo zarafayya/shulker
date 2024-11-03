@@ -3,6 +3,12 @@ import { ScriptEventCommandMessageAfterEvent, system } from "@minecraft/server";
 type ScriptEventHandler = (event: ScriptEventCommandMessageAfterEvent) => void;
 let events: Map<string, ScriptEventHandler>;
 
+function registerEvents() {
+  system.afterEvents.scriptEventReceive.subscribe((event) => {
+    events.get(event.id)?.(event);
+  });
+}
+
 export const scriptEvents = {
   /**
    * Subscribe to a scriptevent
@@ -12,9 +18,7 @@ export const scriptEvents = {
   subscribe(id: string, handler: ScriptEventHandler) {
     if (!events) {
       events = new Map();
-      system.afterEvents.scriptEventReceive.subscribe((event) => {
-        events.get(event.id)?.(event);
-      });
+      system.run(registerEvents);
     }
     if (events.has(id)) {
       throw new Error(`ScriptEvent '${id}' already exists.`);
