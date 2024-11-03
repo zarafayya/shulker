@@ -9,3 +9,4 @@ export * from "./scriptevents.js";
 export * from "./sleep.js";
 export * from "./time.js";
 export * from "./timeout.js";
+export * from "./variable.js";
