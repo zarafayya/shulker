@@ -1,4 +1,10 @@
-import { Entity, EntityRideableComponent, system, world } from "@minecraft/server";
+import {
+  Entity,
+  EntityRemoveBeforeEvent,
+  EntityRideableComponent,
+  system,
+  world,
+} from "@minecraft/server";
 import { getActiveDimensions } from "./active_dimensions.js";
 
 export type MountEvent = {
@@ -39,8 +45,15 @@ function createListener() {
   }, 2);
 }
 
+function rideMapRemover({ removedEntity }: EntityRemoveBeforeEvent) {
+  rideMap.delete(removedEntity);
+}
+
 function subscribe(set: Set<MountEventHandler>, handler: MountEventHandler) {
-  if (set.size === 0) world.setDynamicProperty("shulker:mount_event", createListener());
+  if (set.size === 0) {
+    world.setDynamicProperty("shulker:mount_event", createListener());
+    world.beforeEvents.entityRemove.subscribe(rideMapRemover);
+  }
   set.add(handler);
 }
 
@@ -48,12 +61,10 @@ function unsubscribe(set: Set<MountEventHandler>, handler: MountEventHandler) {
   if (set.size === 1) {
     const id = world.getDynamicProperty("shulker:mount_event");
     if (typeof id === "number") system.clearRun(id);
+    world.beforeEvents.entityRemove.unsubscribe(rideMapRemover);
   }
   set.delete(handler);
 }
-
-world.beforeEvents.entityRemove.subscribe(({ removedEntity }) => rideMap.delete(removedEntity));
-
 /**
  * Listens to events related to mounting and dismounting rideable entities.
  */
