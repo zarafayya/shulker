@@ -1,4 +1,4 @@
-import { Entity } from "@minecraft/server";
+import { Entity, system } from "@minecraft/server";
 
 /**
  * Set a variable to be used in client-side entities
@@ -20,13 +20,18 @@ import { Entity } from "@minecraft/server";
  * }
  * ```
  */
-export function setVariable(entity: Entity, key: string, value: string | number) {
+export async function setVariable(entity: Entity, key: string, value: string | number) {
   const controller = `${key}.${value}`;
   if (typeof value === "string") {
     value = `'${value}'`;
   }
-  entity.playAnimation("animation.humanoid.base_pose", {
+  entity.playAnimation("animation.player.attack.positions", {
     controller,
     stopExpression: `v.${key} = ${value}; return 1;`,
+  });
+  await system.waitTicks(1);
+  entity.playAnimation("animation.humanoid.base_pose", {
+    controller,
+    stopExpression: "0",
   });
 }
