@@ -10,7 +10,6 @@ declare module "@minecraft/server" {
   interface ItemStack {
     // TODO: constructor
     // new (item: $ItemTypes, count?: number): ItemStack;
-    anchor(): void;
     getComponent<K extends keyof ItemComponents>(component: K): ItemComponents[K];
     getTags(): ItemTag[];
     hasComponent<K extends keyof ItemComponents>(component: K): boolean;
