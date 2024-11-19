@@ -1,12 +1,6 @@
-import { SpellEffects } from "bedrock-ts";
-
+import "@minecraft/server";
+import { AnimationIdentifier, TypeFamily } from "bedrock-ts";
 declare module "@minecraft/server" {
-  type BlockComponents = {
-    "minecraft:inventory": BlockInventoryComponent;
-    "minecraft:piston": BlockPistonComponent;
-    "minecraft:record_player": BlockRecordPlayerComponent;
-    "minecraft:sign": BlockSignComponent;
-  };
   type EntityComponents = {
     "minecraft:addrider": EntityAddRiderComponent;
     "minecraft:ageable": EntityAgeableComponent;
@@ -73,57 +67,96 @@ declare module "@minecraft/server" {
     "minecraft:variant": EntityVariantComponent;
     "minecraft:wants_jockey": EntityWantsJockeyComponent;
   };
-  type PlayerComponents = EntityComponents & {
-    "minecraft:cursor_inventory": PlayerCursorInventoryComponent;
-  };
-  type ItemComponents = {
-    "minecraft:cooldown": ItemCooldownComponent;
-    "minecraft:durability": ItemDurabilityComponent;
-    "minecraft:enchantable": ItemEnchantableComponent;
-    "minecraft:food": ItemFoodComponent;
-  };
-
-  interface Block {
-    getComponent<K extends keyof BlockComponents>(component: K): BlockComponents[K];
-  }
   interface Entity {
+    playAnimation(animationName: AnimationIdentifier, options?: PlayAnimationOptions): void;
     getComponent<K extends keyof EntityComponents>(component: K): EntityComponents[K];
     hasComponent<K extends keyof EntityComponents>(component: K): boolean;
-  }
-  interface Player {
-    getComponent<K extends keyof PlayerComponents>(component: K): PlayerComponents[K];
-    hasComponent<K extends keyof PlayerComponents>(component: K): boolean;
-  }
-  interface ItemStack {
-    getComponent<K extends keyof ItemComponents>(component: K): ItemComponents[K];
-    hasComponent<K extends keyof ItemComponents>(component: K): boolean;
-  }
-
-  interface Entity {
     addEffect(
-      effectType: SpellEffects,
+      effectType: $EffectTypes,
       duration: number,
       options?: EntityEffectOptions,
     ): Effect | undefined;
-    removeEffect(effectType: SpellEffects): void;
+    removeEffect(effectType: $EffectTypes): void;
   }
 
-  type CameraPresets =
-    | "minecraft:first_person"
-    | "minecraft:free"
-    | "minecraft:third_person"
-    | "minecraft:third_person_front"
-    | "minecraft:follow_orbit";
+  class $EntityDefinitionFeedItem extends EntityDefinitionFeedItem {
+    readonly item: $ItemTypes;
+  }
+  interface EntityAgeableComponent {
+    getFeedItems(): $EntityDefinitionFeedItem[];
+  }
 
-  interface Camera {
-    setCamera(
-      cameraPreset: CameraPresets,
-      setOptions?:
-        | CameraDefaultOptions
-        | CameraSetFacingOptions
-        | CameraSetLocationOptions
-        | CameraSetPosOptions
-        | CameraSetRotOptions,
-    ): void;
+  class $FeedItem extends FeedItem {
+    readonly item: $ItemTypes;
+    getEffects(): $FeedItemEffect[];
+  }
+  type $FeedItemEffectNames = $EffectTypes extends `${infer T}:${infer U}` ? U : never;
+  class $FeedItemEffect extends FeedItemEffect {
+    readonly name: $FeedItemEffectNames;
+  }
+  interface EntityHealableComponent {
+    getFeedItems(): $FeedItem[];
+  }
+
+  interface EntityQueryOptions extends EntityFilter {
+    type?: $EntityTypes;
+    families?: TypeFamily[];
+    excluedeFamilies?: TypeFamily[];
+    excludeTypes?: $EntityTypes[];
+  }
+  interface $EntityDataDrivenTriggerEventOptions extends EntityDataDrivenTriggerEventOptions {
+    entityTypes?: $EntityTypes[];
+  }
+  interface DataDrivenEntityTriggerAfterEventSignal {
+    subscribe(
+      callback: (arg: DataDrivenEntityTriggerAfterEvent) => void,
+      options?: $EntityDataDrivenTriggerEventOptions,
+    ): (arg: DataDrivenEntityTriggerAfterEvent) => void;
+  }
+
+  interface $EntityEventOptions extends EntityEventOptions {
+    entityTypes?: $EntityTypes[];
+  }
+  interface EffectAddAfterEventSignal {
+    subscribe(
+      callback: (arg: EffectAddAfterEvent) => void,
+      options?: $EntityEventOptions,
+    ): (arg: EffectAddAfterEvent) => void;
+  }
+  interface EntityDieAfterEventSignal {
+    subscribe(
+      callback: (arg: EntityDieAfterEvent) => void,
+      options?: $EntityEventOptions,
+    ): (arg: EntityDieAfterEvent) => void;
+  }
+  interface EntityHealthChangedAfterEventSignal {
+    subscribe(
+      callback: (arg: EntityHealthChangedAfterEvent) => void,
+      options?: $EntityEventOptions,
+    ): (arg: EntityHealthChangedAfterEvent) => void;
+  }
+  interface EntityHitBlockAfterEventSignal {
+    subscribe(
+      callback: (arg: EntityHitBlockAfterEvent) => void,
+      options?: $EntityEventOptions,
+    ): (arg: EntityHitBlockAfterEvent) => void;
+  }
+  interface EntityHitEntityAfterEventSignal {
+    subscribe(
+      callback: (arg: EntityHitEntityAfterEvent) => void,
+      options?: $EntityEventOptions,
+    ): (arg: EntityHitEntityAfterEvent) => void;
+  }
+  interface EntityHurtAfterEventSignal {
+    subscribe(
+      callback: (arg: EntityHurtAfterEvent) => void,
+      options?: $EntityEventOptions,
+    ): (arg: EntityHurtAfterEvent) => void;
+  }
+  interface EntityRemoveAfterEventSignal {
+    subscribe(
+      callback: (arg: EntityRemoveAfterEvent) => void,
+      options?: $EntityEventOptions,
+    ): (arg: EntityRemoveAfterEvent) => void;
   }
 }
