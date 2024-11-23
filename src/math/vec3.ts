@@ -22,35 +22,51 @@ export class Vec3 implements Vector3 {
   /**
    * Shorthand for writing `new Vec3(0, 0, -1)`.
    */
-  static readonly Back = new Vec3(0, 0, -1);
+  static get Back() {
+    return new Vec3(0, 0, -1);
+  }
   /**
    * Shorthand for writing `new Vec3(0, -1, 0)`.
    */
-  static readonly Down = new Vec3(0, -1, 0);
+  static get Down() {
+    return new Vec3(0, -1, 0);
+  }
   /**
    * Shorthand for writing `new Vec3(0, 0, 1)`.
    */
-  static readonly Forward = new Vec3(0, 0, 1);
+  static get Forward() {
+    return new Vec3(0, 0, 1);
+  }
   /**
    * Shorthand for writing `new Vec3(-1, 0, 0)`.
    */
-  static readonly Left = new Vec3(-1, 0, 0);
+  static get Left() {
+    return new Vec3(-1, 0, 0);
+  }
   /**
    * Shorthand for writing `new Vec3(1, 1, 1)`.
    */
-  static readonly One = new Vec3(1, 1, 1);
+  static get One() {
+    return new Vec3(1, 1, 1);
+  }
   /**
    * Shorthand for writing `new Vec3(1, 0, 0)`.
    */
-  static readonly Right = new Vec3(1, 0, 0);
+  static get Right() {
+    return new Vec3(1, 0, 0);
+  }
   /**
    * Shorthand for writing `new Vec3(0, 1, 0)`.
    */
-  static readonly Up = new Vec3(0, 1, 0);
+  static get Up() {
+    return new Vec3(0, 1, 0);
+  }
   /**
    * Shorthand for writing `new Vec3(0, 0, 0)`.
    */
-  static readonly Zero = new Vec3(0, 0, 0);
+  static get Zero() {
+    return new Vec3(0, 0, 0);
+  }
 
   /**
    * Converts the yaw value into a direction vector.

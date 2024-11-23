@@ -19,27 +19,39 @@ export class Vec2 implements Vector2 {
   /**
    * Shorthand for writing `new Vec2(0, -1)`.
    */
-  static readonly Down = new Vec2(0, -1);
+  static get Down() {
+    return new Vec2(0, -1);
+  }
   /**
    * Shorthand for writing `new Vec2(0, 1)`.
    */
-  static readonly Up = new Vec2(0, 1);
+  static get Up() {
+    return new Vec2(0, 1);
+  }
   /**
    * Shorthand for writing `new Vec2(-1, 0)`.
    */
-  static readonly Left = new Vec2(-1, 0);
+  static get Left() {
+    return new Vec2(-1, 0);
+  }
   /**
    * Shorthand for writing `new Vec2(1, 1)`.
    */
-  static readonly One = new Vec2(1, 1);
+  static get One() {
+    return new Vec2(1, 1);
+  }
   /**
    * Shorthand for writing `new Vec2(1, 0)`.
    */
-  static readonly Right = new Vec2(1, 0);
+  static get Right() {
+    return new Vec2(1, 0);
+  }
   /**
    * Shorthand for writing `new Vec2(0, 0)`.
    */
-  static readonly Zero = new Vec2(0, 0);
+  static get Zero() {
+    return new Vec2(0, 0);
+  }
 
   /**
    * Checks if the current vector is equal to another vector.
