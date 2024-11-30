@@ -37,4 +37,5 @@ export function shootProjectile(
     entity.applyImpulse(velocity);
     velocity = velocity.subtract(g).scale(inertia);
   });
+  return projectile;
 }
