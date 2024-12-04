@@ -9,10 +9,12 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "server.d.ts"
+    "server.d.ts",
+    "server-ui.d.ts"
   ],
   "peerDependencies": {
-    "@minecraft/server": "^1.16.0"
+    "@minecraft/server": "^1.16.0",
+    "@minecraft/server-ui": "^1.3.0"
   },
   "dependencies": {
     "@minecraft/vanilla-data": "^1.21.44",
