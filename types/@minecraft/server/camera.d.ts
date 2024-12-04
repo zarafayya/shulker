@@ -1,4 +1,5 @@
-import "@minecraft/server";
+import type { $CameraPresetsTypes } from "../../types.d.ts";
+
 declare module "@minecraft/server" {
   interface Camera {
     setCamera(

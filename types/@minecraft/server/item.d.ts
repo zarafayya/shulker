@@ -1,5 +1,7 @@
-import "@minecraft/server";
+import { BlockStateMapping } from "@minecraft/vanilla-data";
 import { ItemTag } from "bedrock-ts";
+import type { $BlockTypes, $CooldownCategoryTypes } from "../../types.d.ts";
+
 declare module "@minecraft/server" {
   type ItemComponents = {
     "minecraft:cooldown": ItemCooldownComponent;
@@ -9,12 +11,15 @@ declare module "@minecraft/server" {
   };
   interface ItemStack {
     // TODO: constructor
-    // new (item: $ItemTypes, count?: number): ItemStack;
+    // new (item: $ItemTypes, count?: number, asdf?: boolean): ItemStack;
     getComponent<K extends keyof ItemComponents>(component: K): ItemComponents[K];
     getTags(): ItemTag[];
     hasComponent<K extends keyof ItemComponents>(component: K): boolean;
     hasTag(tag: ItemTag): boolean;
-    matches<T extends $BlockTypes, U = BlockStateMapping[T]>(blockName: T, states?: U): boolean;
+    matches<T extends keyof BlockStateMapping, K = keyof BlockStateMapping[T], U extends K = K>(
+      blockName: T,
+      states?: U,
+    ): boolean;
     setCanDestroy(blockIdentifiers?: $BlockTypes[]): void;
     setCanPlaceOn(blockIdentifiers?: $BlockTypes[]): void;
   }

@@ -1,5 +1,5 @@
-import "@minecraft/server";
 import { BlockStateMapping } from "@minecraft/vanilla-data";
+import type { $BlockEventOptions, $BlockTags, $BlockTypes, $ItemTypes } from "../../types.d.ts";
 
 declare module "@minecraft/server" {
   type BlockComponents = {
@@ -16,7 +16,7 @@ declare module "@minecraft/server" {
       blockName: T,
       states?: U,
     ): boolean;
-    matches<T extends Record<string, string | number | boolean>, K = keyof T>(
+    matches<T extends Record<string, string | number | boolean>, K extends keyof T = keyof T>(
       blockName: string,
       states?: K,
     ): T[K];
@@ -24,15 +24,21 @@ declare module "@minecraft/server" {
   interface BlockPermutation {
     getAllStates<T extends keyof BlockStateMapping, U = BlockStateMapping[T]>(): U;
     getAllStates<T extends Record<string, string | number | boolean>>(): T;
-    getState<T extends keyof BlockStateMapping, U = BlockStateMapping[T], K = keyof U>(
+    getState<
+      T extends keyof BlockStateMapping,
+      U = BlockStateMapping[T],
+      K extends keyof U = keyof U,
+    >(
       stateName: K,
     ): U[K];
-    getState<T extends Record<string, string | number | boolean>, K = keyof T>(stateName: K): T[K];
+    getState<T extends Record<string, string | number | boolean>, K extends keyof T>(
+      stateName: K,
+    ): T[K];
     matches<T extends keyof BlockStateMapping, U = BlockStateMapping[T]>(
       blockName: T,
       states?: U,
     ): boolean;
-    matches<T extends Record<string, string | number | boolean>, K = keyof T>(
+    matches<T extends Record<string, string | number | boolean>, K extends keyof T = keyof T>(
       blockName: string,
       states?: K,
     ): T[K];
@@ -40,7 +46,7 @@ declare module "@minecraft/server" {
       stateName: K,
       value: boolean,
     ): BlockPermutation;
-    withState<T extends Record<string, string | number | boolean>, K = keyof T>(
+    withState<T extends Record<string, string | number | boolean>, K extends keyof T = keyof T>(
       stateName: K,
       value: T[K],
     ): BlockPermutation;
@@ -64,9 +70,6 @@ declare module "@minecraft/server" {
   }
 
   // Block events
-  interface $BlockEventOptions extends BlockEventOptions {
-    blockTypes?: $BlockTypes[];
-  }
   interface PlayerBreakBlockAfterEventSignal {
     subscribe(
       callback: (arg: PlayerBreakBlockAfterEvent) => void,

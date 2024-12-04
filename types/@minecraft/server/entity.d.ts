@@ -1,5 +1,13 @@
-import "@minecraft/server";
 import { AnimationIdentifier, TypeFamily } from "bedrock-ts";
+import type {
+  $EffectTypes,
+  $EntityDataDrivenTriggerEventOptions,
+  $EntityDefinitionFeedItem,
+  $EntityEventOptions,
+  $EntityTypes,
+  $FeedItem,
+} from "../../types.d.ts";
+
 declare module "@minecraft/server" {
   type EntityComponents = {
     "minecraft:addrider": EntityAddRiderComponent;
@@ -79,21 +87,10 @@ declare module "@minecraft/server" {
     removeEffect(effectType: $EffectTypes): void;
   }
 
-  class $EntityDefinitionFeedItem extends EntityDefinitionFeedItem {
-    readonly item: $ItemTypes;
-  }
   interface EntityAgeableComponent {
     getFeedItems(): $EntityDefinitionFeedItem[];
   }
 
-  class $FeedItem extends FeedItem {
-    readonly item: $ItemTypes;
-    getEffects(): $FeedItemEffect[];
-  }
-  type $FeedItemEffectNames = $EffectTypes extends `${infer T}:${infer U}` ? U : never;
-  class $FeedItemEffect extends FeedItemEffect {
-    readonly name: $FeedItemEffectNames;
-  }
   interface EntityHealableComponent {
     getFeedItems(): $FeedItem[];
   }
@@ -104,18 +101,11 @@ declare module "@minecraft/server" {
     excluedeFamilies?: TypeFamily[];
     excludeTypes?: $EntityTypes[];
   }
-  interface $EntityDataDrivenTriggerEventOptions extends EntityDataDrivenTriggerEventOptions {
-    entityTypes?: $EntityTypes[];
-  }
   interface DataDrivenEntityTriggerAfterEventSignal {
     subscribe(
       callback: (arg: DataDrivenEntityTriggerAfterEvent) => void,
       options?: $EntityDataDrivenTriggerEventOptions,
     ): (arg: DataDrivenEntityTriggerAfterEvent) => void;
-  }
-
-  interface $EntityEventOptions extends EntityEventOptions {
-    entityTypes?: $EntityTypes[];
   }
   interface EffectAddAfterEventSignal {
     subscribe(

@@ -1,6 +1,6 @@
-import "@minecraft/server";
-import { $CooldownCategoryTypes } from "@minecraft/server";
 import { SoundDefinitionIdentifier } from "bedrock-ts";
+import type { $CooldownCategoryTypes } from "../../types.d.ts";
+
 declare module "@minecraft/server" {
   type PlayerComponents = EntityComponents & {
     "minecraft:cursor_inventory": PlayerCursorInventoryComponent;

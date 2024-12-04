@@ -9,7 +9,7 @@
   "types": "./dist/index.d.ts",
   "files": [
     "dist",
-    "components.d.ts"
+    "types"
   ],
   "peerDependencies": {
     "@minecraft/server": "^1.16.0"
