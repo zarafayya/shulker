@@ -1,15 +1,15 @@
 import { Player, system, world } from "@minecraft/server";
 
-let players: Set<Player>;
+let playerList: Player[];
 
 function registerEvents() {
   world.afterEvents.playerSpawn.subscribe(({ player, initialSpawn }) => {
     if (initialSpawn) {
-      players.add(player);
+      playerList.push(player);
     }
   });
   world.beforeEvents.playerLeave.subscribe(({ player }) => {
-    players.delete(player);
+    playerList = playerList.filter((p) => p !== player);
   });
 }
 
@@ -18,9 +18,9 @@ function registerEvents() {
  * @returns All active players in the world
  */
 export function getAllPlayers() {
-  if (!players) {
-    players = new Set(world.getAllPlayers());
+  if (!playerList) {
+    playerList = world.getAllPlayers();
     system.run(registerEvents);
   }
-  return players;
+  return playerList;
 }

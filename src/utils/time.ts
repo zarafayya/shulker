@@ -1,32 +1,36 @@
 import { system, TimeOfDay, world } from "@minecraft/server";
 
 type TimeEventHandler = (time: TimeOfDay, initial: boolean) => void;
-let events: Set<TimeEventHandler>;
+let handlerList: TimeEventHandler[];
 let prev = -1;
+
+function registerEvents() {
+  system.runInterval(() => {
+    const current = getTimeOfDay();
+    if (prev === current) {
+      return;
+    }
+    for (const handler of handlerList) {
+      handler(current, prev === -1);
+    }
+    prev = current;
+  });
+}
 
 export const timeEvents = {
   /**
    * Subscribes to time of day changes.
-   * @param handler Code to run when the time of day changed. Note a second argument to indicate if the event is running when you first join the world.
+   * @param callback Code to run when the time of day changed. Note a second argument to indicate if the event is running when you first join the world.
    */
-  subscribe(handler: TimeEventHandler) {
-    if (!events) {
-      events = new Set();
-      system.runInterval(() => {
-        const current = getTimeOfDay();
-        if (prev === current) {
-          return;
-        }
-        for (const event of events) {
-          event(current, prev === -1);
-        }
-        prev = current;
-      });
+  subscribe(callback: TimeEventHandler) {
+    if (!handlerList) {
+      handlerList = [];
+      system.run(registerEvents);
     }
-    events.add(handler);
+    handlerList.push(callback);
   },
   unsubscribe(callback: TimeEventHandler) {
-    events.delete(callback);
+    handlerList.filter((cb) => cb !== callback);
   },
 } as const;
 

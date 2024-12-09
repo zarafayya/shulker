@@ -1,23 +1,26 @@
 import { Dimension, system, world } from "@minecraft/server";
 
-let dimensions: Set<Dimension>;
+let dimensionList: Dimension[];
 
 function registerEvents() {
   world.afterEvents.playerDimensionChange.subscribe(({ fromDimension, toDimension }) => {
     if (fromDimension.getPlayers().length === 0) {
-      dimensions.delete(fromDimension);
+      dimensionList = dimensionList.filter((d) => d !== fromDimension);
     }
-    dimensions.add(toDimension);
+    if (!dimensionList.includes(toDimension)) {
+      dimensionList.push(toDimension);
+    }
   });
   world.afterEvents.playerSpawn.subscribe(({ player, initialSpawn }) => {
-    if (initialSpawn) {
-      dimensions.add(player.dimension);
+    const dimension = player.dimension;
+    if (initialSpawn && !dimensionList.includes(dimension)) {
+      dimensionList.push(dimension);
     }
   });
   world.beforeEvents.playerLeave.subscribe(({ player }) => {
     const dimension = player.dimension;
     if (dimension.getPlayers().length === 0) {
-      dimensions.delete(dimension);
+      dimensionList = dimensionList.filter((d) => d !== dimension);
     }
   });
 }
@@ -27,9 +30,9 @@ function registerEvents() {
  * @returns All active dimensions
  */
 export function getActiveDimensions() {
-  if (!dimensions) {
-    dimensions = new Set(world.getAllPlayers().map((p) => p.dimension));
+  if (!dimensionList) {
+    dimensionList = world.getAllPlayers().map((p) => p.dimension);
     system.run(registerEvents);
   }
-  return dimensions;
+  return dimensionList;
 }
