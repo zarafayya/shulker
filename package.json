@@ -3,7 +3,7 @@
   "version": "0.6.2",
   "type": "module",
   "scripts": {
-    "prepack": "tsc && bun run scripts/prepack.js"
+    "prepack": "tsup ./src/index.ts --dts --treeshake --format esm && bun run scripts/prepack.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -22,6 +22,7 @@
     "@types/bun": "^1.1.14",
     "prettier": "^3.4.2",
     "prettier-plugin-organize-imports": "^4.1.0",
+    "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }
