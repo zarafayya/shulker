@@ -7,21 +7,6 @@ import {
   SoundDefinitionIdentifier,
   TypeFamily,
 } from "bedrock-ts";
-// import type {
-//   $BlockEventOptions,
-//   $BlockTags,
-//   $BlockTypes,
-//   $CameraPresetsTypes,
-//   $CooldownCategoryTypes,
-//   $DimensionTypes,
-//   $EffectTypes,
-//   $EntityDataDrivenTriggerEventOptions,
-//   $EntityDefinitionFeedItem,
-//   $EntityEventOptions,
-//   $EntityTypes,
-//   $FeedItem,
-//   $ItemTypes,
-// } from "./dist/types.d.ts";
 
 import {
   BlockEventOptions,
