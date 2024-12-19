@@ -25,7 +25,7 @@ export async function setVariable(entity: Entity, key: string, value: string | n
   if (typeof value === "string") {
     value = `'${value}'`;
   }
-  entity.playAnimation("animation.player.attack.positions", {
+  entity.playAnimation("animation.humanoid.base_pose", {
     controller,
     stopExpression: `v.${key} = ${value}; return 1;`,
   });
