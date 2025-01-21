@@ -1,10 +1,6 @@
 import { Vector2, Vector3 } from "@minecraft/server";
 import { Vec3 } from "../math/index.js";
 
-function toRadians(angle: number) {
-  return angle * (Math.PI / 180);
-}
-
 /**
  * Get Local position from location, rotation, and distance
  * @param location Location
@@ -19,19 +15,19 @@ function toRadians(angle: number) {
  * const coord = getLocalPosition(location, rotation, distance);
  */
 export function getLocalPosition(location: Vector3, rotation: Vector2, distance: Vector3) {
-  const yaw = rotation.y;
-  const pitch = rotation.x;
+  const yaw = rotation.y * (Math.PI / 180);
+  const pitch = rotation.x * (Math.PI / 180);
 
-  const dx = new Vec3(Math.cos(toRadians(yaw)), 0, Math.sin(toRadians(yaw))).scale(distance.x);
+  const dx = new Vec3(Math.cos(yaw), 0, Math.sin(yaw)).scale(distance.x);
   const dy = new Vec3(
-    Math.sin(toRadians(yaw)) * -Math.sin(toRadians(pitch)),
-    Math.cos(pitch * (Math.PI / 180)),
-    Math.cos(toRadians(yaw)) * Math.sin(toRadians(pitch)),
+    Math.sin(yaw) * -Math.sin(pitch),
+    Math.cos(pitch),
+    Math.cos(yaw) * Math.sin(pitch),
   ).scale(distance.y);
   const dz = new Vec3(
-    -Math.sin(toRadians(yaw)) * Math.cos(toRadians(pitch)),
-    -Math.sin(pitch * (Math.PI / 180)),
-    Math.cos(toRadians(yaw)) * Math.cos(toRadians(pitch)),
+    -Math.sin(yaw) * Math.cos(pitch),
+    -Math.sin(pitch),
+    Math.cos(yaw) * Math.cos(pitch),
   ).scale(distance.z);
   return new Vec3(location).add(dx).add(dy).add(dz);
 }
