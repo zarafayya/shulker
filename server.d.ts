@@ -66,6 +66,7 @@ declare namespace ShulkerInternal {
 
   // Components
   type BlockComponents = {
+    "minecraft:fluidContainer": server.BlockFluidContainerComponent;
     "minecraft:inventory": server.BlockInventoryComponent;
     "minecraft:piston": server.BlockPistonComponent;
     "minecraft:record_player": server.BlockRecordPlayerComponent;
@@ -151,6 +152,15 @@ declare namespace ShulkerInternal {
   interface BlockEventOptions extends server.BlockEventOptions {
     blockTypes?: BlockTypes[];
   }
+  interface BlockFilter extends server.BlockFilter {
+    excludeTags?: BlockTags[];
+    excludeTypes?: BlockTypes[];
+    includeTags?: BlockTags[];
+    includeTypes?: BlockTypes[];
+  }
+  interface BlockFillOptions extends server.BlockFillOptions {
+    blockFilter?: BlockFilter;
+  }
 
   // Entities
   type FeedItemEffectNames = EffectTypes extends `${infer _}:${infer U}` ? U : never;
@@ -227,6 +237,23 @@ declare module "@minecraft/server" {
   }
 
   interface Dimension {
+    containsBlock(
+      volume: BlockVolumeBase,
+      filter: ShulkerInternal.BlockFilter,
+      allowUnloadedChunks?: boolean,
+    ): boolean;
+    fillBlocks(
+      volume: BlockVolumeBase,
+      block: BlockPermutation | BlockType | ShulkerInternal.BlockTypes,
+      options?: BlockFillOptions,
+    ): ListBlockVolume;
+    getBlocks(
+      volume: BlockVolumeBase,
+      filter: ShulkerInternal.BlockFilter,
+      allowUnloadedChunks?: boolean,
+    ): ListBlockVolume;
+    getEntities(options?: EntityQueryOptions): Entity[];
+    setBlockType(location: Vector3, blockType: BlockType | ShulkerInternal.BlockTypes): void;
     spawnEntity(identifier: ShulkerInternal.EntityTypes, location: Vector3): Entity;
     spawnParticle(
       effectName: bedrockts.ParticleIdentifier,
@@ -359,6 +386,7 @@ declare module "@minecraft/server" {
 
   interface World {
     getDimension(dimensionId: ShulkerInternal.DimensionTypes): Dimension;
+    getPlayers(options?: EntityQueryOptions): Player[];
     playMusic(trackId: bedrockts.SoundDefinitionIdentifier, musicOptions?: MusicOptions): void;
     playSound(
       soundId: bedrockts.SoundDefinitionIdentifier,
