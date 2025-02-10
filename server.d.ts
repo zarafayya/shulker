@@ -1,215 +1,222 @@
-import "@minecraft/server";
-import { BlockStateMapping } from "@minecraft/vanilla-data";
-import {
-  AnimationIdentifier,
-  ItemTag,
-  ParticleIdentifier,
-  SoundDefinitionIdentifier,
-  TypeFamily,
-} from "bedrock-ts";
+import * as server from "@minecraft/server";
+import * as vanilla from "@minecraft/vanilla-data";
+import * as bedrockts from "bedrock-ts";
 
-import {
-  BlockEventOptions,
-  EntityDataDrivenTriggerEventOptions,
-  EntityDefinitionFeedItem,
-  EntityEventOptions,
-  FeedItem,
-  FeedItemEffect,
-} from "@minecraft/server";
-import {
-  MinecraftBiomeTypes,
-  MinecraftBlockTypes,
-  MinecraftCameraPresetsTypes,
-  MinecraftCooldownCategoryTypes,
-  MinecraftEffectTypes,
-  MinecraftEnchantmentTypes,
-  MinecraftEntityTypes,
-  MinecraftFeatureTypes,
-  MinecraftItemTypes,
-  MinecraftPotionEffectTypes,
-  MinecraftPotionLiquidTypes,
-  MinecraftPotionModifierTypes,
-  MinecraftDimensionTypes as VanillaDimensionTypes,
-} from "@minecraft/vanilla-data";
+declare namespace ShulkerInternal {
+  type UnionString<T extends string> = T | (string & {});
 
-type UnionString<T extends string> = T | (string & {});
+  type BiomeTypes = `${vanilla.MinecraftBiomeTypes}`;
+  type DimensionTypes = `${vanilla.MinecraftDimensionTypes}`;
+  type EffectTypes = `${vanilla.MinecraftEffectTypes}`;
+  type EnchantmentTypes = `${vanilla.MinecraftEnchantmentTypes}`;
+  type FeatureTypes = `${vanilla.MinecraftFeatureTypes}`;
+  type PotionEffectTypes = `${vanilla.MinecraftPotionEffectTypes}`;
+  type PotionLiquidTypes = `${vanilla.MinecraftPotionLiquidTypes}`;
+  type PotionModifierTypes = `${vanilla.MinecraftPotionModifierTypes}`;
 
-type $BiomeTypes = `${MinecraftBiomeTypes}`;
-type $DimensionTypes = `${VanillaDimensionTypes}`;
-type $EffectTypes = `${MinecraftEffectTypes}`;
-type $EnchantmentTypes = `${MinecraftEnchantmentTypes}`;
-type $FeatureTypes = `${MinecraftFeatureTypes}`;
-type $PotionEffectTypes = `${MinecraftPotionEffectTypes}`;
-type $PotionLiquidTypes = `${MinecraftPotionLiquidTypes}`;
-type $PotionModifierTypes = `${MinecraftPotionModifierTypes}`;
+  type BlockTags = UnionString<
+    | "acacia"
+    | "birch"
+    | "dark_oak"
+    | "diamond_pick_diggable"
+    | "dirt"
+    | "fertilize_area"
+    | "grass"
+    | "gravel"
+    | "gold_pick_diggable"
+    | "iron_pick_diggable"
+    | "jungle"
+    | "log"
+    | "metal"
+    | "minecraft:crop"
+    | "minecraft:diamond_tier_destructible"
+    | "minecraft:iron_tier_destructible"
+    | "minecraft:is_axe_item_destructible"
+    | "minecraft:is_hoe_item_destructible"
+    | "minecraft:is_mace_item_destructible"
+    | "minecraft:is_pickaxe_item_destructible"
+    | "minecraft:is_shears_item_destructible"
+    | "minecraft:is_shovel_item_destructible"
+    | "minecraft:is_sword_item_destructible"
+    | "minecraft:netherite_tier_destructible"
+    | "minecraft:stone_tier_destructible"
+    | "mob_spawner"
+    | "not_feature_replaceable"
+    | "oak"
+    | "one_way_collidable"
+    | "plant"
+    | "pumpkin"
+    | "rail"
+    | "sand"
+    | "snow"
+    | "spruce"
+    | "stone"
+    | "stone_pick_diggable"
+    | "text_sign"
+    | "trapdoors"
+    | "water"
+    | "wood"
+    | "wood_pick_diggable"
+  >;
+  type BlockTypes = UnionString<`${vanilla.MinecraftBlockTypes}`>;
+  type CameraPresetsTypes = UnionString<`${vanilla.MinecraftCameraPresetsTypes}`>;
+  type CooldownCategoryTypes = UnionString<`${vanilla.MinecraftCooldownCategoryTypes}`>;
+  type EntityTypes = UnionString<`${vanilla.MinecraftEntityTypes}`>;
+  type ItemTypes = UnionString<`${vanilla.MinecraftItemTypes}`>;
 
-type $BlockTags = UnionString<
-  | "acacia"
-  | "birch"
-  | "dark_oak"
-  | "diamond_pick_diggable"
-  | "dirt"
-  | "fertilize_area"
-  | "grass"
-  | "gravel"
-  | "gold_pick_diggable"
-  | "iron_pick_diggable"
-  | "jungle"
-  | "log"
-  | "metal"
-  | "minecraft:crop"
-  | "minecraft:diamond_tier_destructible"
-  | "minecraft:iron_tier_destructible"
-  | "minecraft:is_axe_item_destructible"
-  | "minecraft:is_hoe_item_destructible"
-  | "minecraft:is_mace_item_destructible"
-  | "minecraft:is_pickaxe_item_destructible"
-  | "minecraft:is_shears_item_destructible"
-  | "minecraft:is_shovel_item_destructible"
-  | "minecraft:is_sword_item_destructible"
-  | "minecraft:netherite_tier_destructible"
-  | "minecraft:stone_tier_destructible"
-  | "mob_spawner"
-  | "not_feature_replaceable"
-  | "oak"
-  | "one_way_collidable"
-  | "plant"
-  | "pumpkin"
-  | "rail"
-  | "sand"
-  | "snow"
-  | "spruce"
-  | "stone"
-  | "stone_pick_diggable"
-  | "text_sign"
-  | "trapdoors"
-  | "water"
-  | "wood"
-  | "wood_pick_diggable"
->;
-type $BlockTypes = UnionString<`${MinecraftBlockTypes}`>;
-type $CameraPresetsTypes = UnionString<`${MinecraftCameraPresetsTypes}`>;
-type $CooldownCategoryTypes = UnionString<`${MinecraftCooldownCategoryTypes}`>;
-type $EntityTypes = UnionString<`${MinecraftEntityTypes}`>;
-type $ItemTypes = UnionString<`${MinecraftItemTypes}`>;
+  // Components
+  type BlockComponents = {
+    "minecraft:inventory": server.BlockInventoryComponent;
+    "minecraft:piston": server.BlockPistonComponent;
+    "minecraft:record_player": server.BlockRecordPlayerComponent;
+    "minecraft:sign": server.BlockSignComponent;
+  };
+  type EntityComponents = {
+    "minecraft:addrider": server.EntityAddRiderComponent;
+    "minecraft:ageable": server.EntityAgeableComponent;
+    "minecraft:breathable": server.EntityBreathableComponent;
+    "minecraft:can_climb": server.EntityCanClimbComponent;
+    "minecraft:can_fly": server.EntityCanFlyComponent;
+    "minecraft:can_power_jump": server.EntityCanPowerJumpComponent;
+    "minecraft:color": server.EntityColorComponent;
+    "minecraft:color2": server.EntityColor2Component;
+    "minecraft:equippable": server.EntityEquippableComponent;
+    "minecraft:fire_immune": server.EntityFireImmuneComponent;
+    "minecraft:floats_in_liquid": server.EntityFloatsInLiquidComponent;
+    "minecraft:flying_speed": server.EntityFlyingSpeedComponent;
+    "minecraft:friction_modifier": server.EntityFrictionModifierComponent;
+    "minecraft:ground_offset": server.EntityGroundOffsetComponent;
+    "minecraft:healable": server.EntityHealableComponent;
+    "minecraft:health": server.EntityHealthComponent;
+    "minecraft:inventory": server.EntityInventoryComponent;
+    "minecraft:is_baby": server.EntityIsBabyComponent;
+    "minecraft:is_charged": server.EntityIsChargedComponent;
+    "minecraft:is_chested": server.EntityIsChestedComponent;
+    "minecraft:is_dyeable": server.EntityIsDyeableComponent;
+    "minecraft:is_hidden_when_invisible": server.EntityIsHiddenWhenInvisibleComponent;
+    "minecraft:is_ignited": server.EntityIsIgnitedComponent;
+    "minecraft:is_illager_captain": server.EntityIsIllagerCaptainComponent;
+    "minecraft:is_saddled": server.EntityIsSaddledComponent;
+    "minecraft:is_shaking": server.EntityIsShakingComponent;
+    "minecraft:is_sheared": server.EntityIsShearedComponent;
+    "minecraft:is_stackable": server.EntityIsStackableComponent;
+    "minecraft:is_stunned": server.EntityIsStunnedComponent;
+    "minecraft:is_tamed": server.EntityIsTamedComponent;
+    "minecraft:item": server.EntityItemComponent;
+    "minecraft:lava_movement": server.EntityLavaMovementComponent;
+    "minecraft:leashable": server.EntityLeashableComponent;
+    "minecraft:mark_variant": server.EntityMarkVariantComponent;
+    "minecraft:movement": server.EntityMovementComponent;
+    "minecraft:movement.amphibious": server.EntityMovementAmphibiousComponent;
+    "minecraft:movement.basic": server.EntityMovementBasicComponent;
+    "minecraft:movement.fly": server.EntityMovementFlyComponent;
+    "minecraft:movement.generic": server.EntityMovementGenericComponent;
+    "minecraft:movement.glide": server.EntityMovementGlideComponent;
+    "minecraft:movement.hover": server.EntityMovementHoverComponent;
+    "minecraft:movement.jump": server.EntityMovementJumpComponent;
+    "minecraft:movement.skip": server.EntityMovementSkipComponent;
+    "minecraft:movement.sway": server.EntityMovementSwayComponent;
+    "minecraft:navigation.climb": server.EntityNavigationClimbComponent;
+    "minecraft:navigation.float": server.EntityNavigationFloatComponent;
+    "minecraft:navigation.fly": server.EntityNavigationFlyComponent;
+    "minecraft:navigation.generic": server.EntityNavigationGenericComponent;
+    "minecraft:navigation.hover": server.EntityNavigationHoverComponent;
+    "minecraft:navigation.walk": server.EntityNavigationWalkComponent;
+    "minecraft:onfire": server.EntityOnFireComponent;
+    "minecraft:projectile": server.EntityProjectileComponent;
+    "minecraft:push_through": server.EntityPushThroughComponent;
+    "minecraft:rideable": server.EntityRideableComponent;
+    "minecraft:riding": server.EntityRidingComponent;
+    "minecraft:scale": server.EntityScaleComponent;
+    "minecraft:skin_id": server.EntitySkinIdComponent;
+    "minecraft:strength": server.EntityStrengthComponent;
+    "minecraft:tameable": server.EntityTameableComponent;
+    "minecraft:tamemount": server.EntityTameMountComponent;
+    "minecraft:type_family": server.EntityTypeFamilyComponent;
+    "minecraft:underwater_movement": server.EntityUnderwaterMovementComponent;
+    "minecraft:variant": server.EntityVariantComponent;
+    "minecraft:wants_jockey": server.EntityWantsJockeyComponent;
+  };
+  type ItemComponents = {
+    "minecraft:cooldown": server.ItemCooldownComponent;
+    "minecraft:durability": server.ItemDurabilityComponent;
+    "minecraft:enchantable": server.ItemEnchantableComponent;
+    "minecraft:food": server.ItemFoodComponent;
+  };
+  type PlayerComponents = EntityComponents & {
+    "minecraft:cursor_inventory": server.PlayerCursorInventoryComponent;
+  };
 
-// Blocks
-interface $BlockEventOptions extends BlockEventOptions {
-  blockTypes?: $BlockTypes[];
-}
+  // Blocks
+  interface BlockEventOptions extends server.BlockEventOptions {
+    blockTypes?: BlockTypes[];
+  }
 
-// Entities
-interface $FeedItem extends FeedItem {
-  readonly item: $ItemTypes;
-  getEffects(): $FeedItemEffect[];
-}
-interface $EntityDefinitionFeedItem extends EntityDefinitionFeedItem {
-  readonly item: $ItemTypes;
-}
-interface $FeedItemEffect extends FeedItemEffect {
-  readonly name: $FeedItemEffectNames;
-}
-type $FeedItemEffectNames = $EffectTypes extends `${infer _T}:${infer U}` ? U : never;
-interface $EntityDataDrivenTriggerEventOptions extends EntityDataDrivenTriggerEventOptions {
-  entityTypes?: $EntityTypes[];
-}
-interface $EntityEventOptions extends EntityEventOptions {
-  entityTypes?: $EntityTypes[];
+  // Entities
+  type FeedItemEffectNames = EffectTypes extends `${infer _}:${infer U}` ? U : never;
+  interface FeedItemEffect extends server.FeedItemEffect {
+    readonly name: FeedItemEffectNames;
+  }
+  interface FeedItem extends server.FeedItem {
+    readonly item: ItemTypes;
+    getEffects(): FeedItemEffect[];
+  }
+  interface EntityDefinitionFeedItem extends server.EntityDefinitionFeedItem {
+    readonly item: ItemTypes;
+  }
+  interface EntityDataDrivenTriggerEventOptions extends server.EntityDataDrivenTriggerEventOptions {
+    entityTypes?: EntityTypes[];
+  }
+  interface EntityEventOptions extends server.EntityEventOptions {
+    entityTypes?: EntityTypes[];
+  }
 }
 
 declare module "@minecraft/server" {
-  // blocks.d.ts
-  type BlockComponents = {
-    "minecraft:inventory": BlockInventoryComponent;
-    "minecraft:piston": BlockPistonComponent;
-    "minecraft:record_player": BlockRecordPlayerComponent;
-    "minecraft:sign": BlockSignComponent;
-  };
   interface Block {
-    getTags(): $BlockTags[];
-    getComponent<K extends keyof BlockComponents>(component: K): BlockComponents[K];
-    hasTag(tag: $BlockTags): boolean;
-    matches<T extends keyof BlockStateMapping, U = BlockStateMapping[T]>(
+    getTags(): ShulkerInternal.BlockTags[];
+    getComponent<K extends keyof ShulkerInternal.BlockComponents>(
+      component: K,
+    ): ShulkerInternal.BlockComponents[K];
+    hasTag(tag: ShulkerInternal.BlockTags): boolean;
+    matches<T extends keyof vanilla.BlockStateMapping>(
       blockName: T,
-      states?: U,
+      states?: vanilla.BlockStateMapping[T],
     ): boolean;
-    matches<T extends Record<string, string | number | boolean>, K extends keyof T = keyof T>(
-      blockName: string,
-      states?: K,
-    ): T[K];
   }
-  interface BlockPermutation {
-    getAllStates<T extends keyof BlockStateMapping, U = BlockStateMapping[T]>(): U;
-    getAllStates<T extends Record<string, string | number | boolean>>(): T;
-    getState<
-      T extends keyof BlockStateMapping,
-      U = BlockStateMapping[T],
-      K extends keyof U = keyof U,
-    >(
-      stateName: K,
-    ): U[K];
-    getState<T extends Record<string, string | number | boolean>, K extends keyof T>(
-      stateName: K,
-    ): T[K];
-    matches<T extends keyof BlockStateMapping, U = BlockStateMapping[T]>(
-      blockName: T,
-      states?: U,
-    ): boolean;
-    matches<T extends Record<string, string | number | boolean>, K extends keyof T = keyof T>(
-      blockName: string,
-      states?: K,
-    ): T[K];
-    withState<T extends keyof BlockStateMapping, U = BlockStateMapping[T], K = keyof U>(
-      stateName: K,
-      value: boolean,
-    ): BlockPermutation;
-    withState<T extends Record<string, string | number | boolean>, K extends keyof T = keyof T>(
-      stateName: K,
-      value: T[K],
-    ): BlockPermutation;
-  }
-  // TODO: static methods
-  // namespace BlockPermutation {
-  //   function resolve<T extends $BlockTypes, U = BlockStateMapping[T]>(
-  //     blockId: T,
-  //     states?: U,
-  //   ): BlockPermutation;
-  // }
   interface BlockRecordPlayerComponent {
-    setRecord<T extends $ItemTypes>(recordItemType?: T, startPlaying?: boolean): void;
+    setRecord(recordItemType?: ShulkerInternal.ItemTypes, startPlaying?: boolean): void;
   }
 
   interface BlockRaycastOptions {
-    excludeTags?: $BlockTags[];
-    excludeTypes?: $BlockTypes[];
-    includeTags?: $BlockTags[];
-    includeTypes?: $BlockTypes[];
+    excludeTags?: ShulkerInternal.BlockTags[];
+    excludeTypes?: ShulkerInternal.BlockTypes[];
+    includeTags?: ShulkerInternal.BlockTags[];
+    includeTypes?: ShulkerInternal.BlockTypes[];
   }
 
-  // Block events
   interface PlayerBreakBlockAfterEventSignal {
     subscribe(
       callback: (arg: PlayerBreakBlockAfterEvent) => void,
-      options?: $BlockEventOptions,
+      options?: ShulkerInternal.BlockEventOptions,
     ): (arg: PlayerBreakBlockAfterEvent) => void;
   }
   interface PlayerBreakBlockBeforeEventSignal {
     subscribe(
       callback: (arg: PlayerBreakBlockBeforeEvent) => void,
-      options?: $BlockEventOptions,
+      options?: ShulkerInternal.BlockEventOptions,
     ): (arg: PlayerBreakBlockBeforeEvent) => void;
   }
   interface PlayerPlaceBlockAfterEventSignal {
     subscribe(
       callback: (arg: PlayerPlaceBlockAfterEvent) => void,
-      options?: $BlockEventOptions,
+      options?: ShulkerInternal.BlockEventOptions,
     ): (arg: PlayerPlaceBlockAfterEvent) => void;
   }
 
-  // camera.d.ts
   interface Camera {
     setCamera(
-      cameraPreset: $CameraPresetsTypes,
+      cameraPreset: ShulkerInternal.CameraPresetsTypes,
       setOptions?:
         | CameraDefaultOptions
         | CameraSetFacingOptions
@@ -219,209 +226,142 @@ declare module "@minecraft/server" {
     ): void;
   }
 
-  // dimension.d.ts
   interface Dimension {
-    spawnEntity(identifier: $EntityTypes, location: Vector3): Entity;
+    spawnEntity(identifier: ShulkerInternal.EntityTypes, location: Vector3): Entity;
     spawnParticle(
-      effectName: ParticleIdentifier,
+      effectName: bedrockts.ParticleIdentifier,
       location: Vector3,
       molangVariables?: MolangVariableMap,
     ): void;
     playSound(
-      soundId: SoundDefinitionIdentifier,
+      soundId: bedrockts.SoundDefinitionIdentifier,
       location: Vector3,
       soundOptions?: WorldSoundOptions,
     ): void;
   }
 
-  // entity.d.ts
-  type EntityComponents = {
-    "minecraft:addrider": EntityAddRiderComponent;
-    "minecraft:ageable": EntityAgeableComponent;
-    "minecraft:breathable": EntityBreathableComponent;
-    "minecraft:can_climb": EntityCanClimbComponent;
-    "minecraft:can_fly": EntityCanFlyComponent;
-    "minecraft:can_power_jump": EntityCanPowerJumpComponent;
-    "minecraft:color": EntityColorComponent;
-    "minecraft:color2": EntityColor2Component;
-    "minecraft:equippable": EntityEquippableComponent;
-    "minecraft:fire_immune": EntityFireImmuneComponent;
-    "minecraft:floats_in_liquid": EntityFloatsInLiquidComponent;
-    "minecraft:flying_speed": EntityFlyingSpeedComponent;
-    "minecraft:friction_modifier": EntityFrictionModifierComponent;
-    "minecraft:ground_offset": EntityGroundOffsetComponent;
-    "minecraft:healable": EntityHealableComponent;
-    "minecraft:health": EntityHealthComponent;
-    "minecraft:inventory": EntityInventoryComponent;
-    "minecraft:is_baby": EntityIsBabyComponent;
-    "minecraft:is_charged": EntityIsChargedComponent;
-    "minecraft:is_chested": EntityIsChestedComponent;
-    "minecraft:is_dyeable": EntityIsDyeableComponent;
-    "minecraft:is_hidden_when_invisible": EntityIsHiddenWhenInvisibleComponent;
-    "minecraft:is_ignited": EntityIsIgnitedComponent;
-    "minecraft:is_illager_captain": EntityIsIllagerCaptainComponent;
-    "minecraft:is_saddled": EntityIsSaddledComponent;
-    "minecraft:is_shaking": EntityIsShakingComponent;
-    "minecraft:is_sheared": EntityIsShearedComponent;
-    "minecraft:is_stackable": EntityIsStackableComponent;
-    "minecraft:is_stunned": EntityIsStunnedComponent;
-    "minecraft:is_tamed": EntityIsTamedComponent;
-    "minecraft:item": EntityItemComponent;
-    "minecraft:lava_movement": EntityLavaMovementComponent;
-    "minecraft:leashable": EntityLeashableComponent;
-    "minecraft:mark_variant": EntityMarkVariantComponent;
-    "minecraft:movement": EntityMovementComponent;
-    "minecraft:movement.amphibious": EntityMovementAmphibiousComponent;
-    "minecraft:movement.basic": EntityMovementBasicComponent;
-    "minecraft:movement.fly": EntityMovementFlyComponent;
-    "minecraft:movement.generic": EntityMovementGenericComponent;
-    "minecraft:movement.glide": EntityMovementGlideComponent;
-    "minecraft:movement.hover": EntityMovementHoverComponent;
-    "minecraft:movement.jump": EntityMovementJumpComponent;
-    "minecraft:movement.skip": EntityMovementSkipComponent;
-    "minecraft:movement.sway": EntityMovementSwayComponent;
-    "minecraft:navigation.climb": EntityNavigationClimbComponent;
-    "minecraft:navigation.float": EntityNavigationFloatComponent;
-    "minecraft:navigation.fly": EntityNavigationFlyComponent;
-    "minecraft:navigation.generic": EntityNavigationGenericComponent;
-    "minecraft:navigation.hover": EntityNavigationHoverComponent;
-    "minecraft:navigation.walk": EntityNavigationWalkComponent;
-    "minecraft:onfire": EntityOnFireComponent;
-    "minecraft:projectile": EntityProjectileComponent;
-    "minecraft:push_through": EntityPushThroughComponent;
-    "minecraft:rideable": EntityRideableComponent;
-    "minecraft:riding": EntityRidingComponent;
-    "minecraft:scale": EntityScaleComponent;
-    "minecraft:skin_id": EntitySkinIdComponent;
-    "minecraft:strength": EntityStrengthComponent;
-    "minecraft:tameable": EntityTameableComponent;
-    "minecraft:tamemount": EntityTameMountComponent;
-    "minecraft:type_family": EntityTypeFamilyComponent;
-    "minecraft:underwater_movement": EntityUnderwaterMovementComponent;
-    "minecraft:variant": EntityVariantComponent;
-    "minecraft:wants_jockey": EntityWantsJockeyComponent;
-  };
   interface Entity {
-    playAnimation(animationName: AnimationIdentifier, options?: PlayAnimationOptions): void;
-    getComponent<K extends keyof EntityComponents>(component: K): EntityComponents[K];
-    hasComponent<K extends keyof EntityComponents>(component: K): boolean;
+    playAnimation(
+      animationName: bedrockts.AnimationIdentifier,
+      options?: PlayAnimationOptions,
+    ): void;
+    getComponent<K extends keyof ShulkerInternal.EntityComponents>(
+      component: K,
+    ): ShulkerInternal.EntityComponents[K];
+    hasComponent<K extends keyof ShulkerInternal.EntityComponents>(component: K): boolean;
     addEffect(
-      effectType: $EffectTypes,
+      effectType: ShulkerInternal.EffectTypes,
       duration: number,
       options?: EntityEffectOptions,
     ): Effect | undefined;
-    removeEffect(effectType: $EffectTypes): void;
+    removeEffect(effectType: ShulkerInternal.EffectTypes): void;
   }
 
   interface EntityAgeableComponent {
-    getFeedItems(): $EntityDefinitionFeedItem[];
+    getFeedItems(): ShulkerInternal.EntityDefinitionFeedItem[];
   }
 
   interface EntityHealableComponent {
-    getFeedItems(): $FeedItem[];
+    getFeedItems(): ShulkerInternal.FeedItem[];
   }
 
   interface EntityQueryOptions extends EntityFilter {
-    type?: $EntityTypes;
-    families?: TypeFamily[];
-    excluedeFamilies?: TypeFamily[];
-    excludeTypes?: $EntityTypes[];
+    type?: ShulkerInternal.EntityTypes;
+    families?: bedrockts.TypeFamily[];
+    excluedeFamilies?: bedrockts.TypeFamily[];
+    excludeTypes?: ShulkerInternal.EntityTypes[];
   }
   interface DataDrivenEntityTriggerAfterEventSignal {
     subscribe(
       callback: (arg: DataDrivenEntityTriggerAfterEvent) => void,
-      options?: $EntityDataDrivenTriggerEventOptions,
+      options?: ShulkerInternal.EntityDataDrivenTriggerEventOptions,
     ): (arg: DataDrivenEntityTriggerAfterEvent) => void;
   }
   interface EffectAddAfterEventSignal {
     subscribe(
       callback: (arg: EffectAddAfterEvent) => void,
-      options?: $EntityEventOptions,
+      options?: ShulkerInternal.EntityEventOptions,
     ): (arg: EffectAddAfterEvent) => void;
   }
   interface EntityDieAfterEventSignal {
     subscribe(
       callback: (arg: EntityDieAfterEvent) => void,
-      options?: $EntityEventOptions,
+      options?: ShulkerInternal.EntityEventOptions,
     ): (arg: EntityDieAfterEvent) => void;
   }
   interface EntityHealthChangedAfterEventSignal {
     subscribe(
       callback: (arg: EntityHealthChangedAfterEvent) => void,
-      options?: $EntityEventOptions,
+      options?: ShulkerInternal.EntityEventOptions,
     ): (arg: EntityHealthChangedAfterEvent) => void;
   }
   interface EntityHitBlockAfterEventSignal {
     subscribe(
       callback: (arg: EntityHitBlockAfterEvent) => void,
-      options?: $EntityEventOptions,
+      options?: ShulkerInternal.EntityEventOptions,
     ): (arg: EntityHitBlockAfterEvent) => void;
   }
   interface EntityHitEntityAfterEventSignal {
     subscribe(
       callback: (arg: EntityHitEntityAfterEvent) => void,
-      options?: $EntityEventOptions,
+      options?: ShulkerInternal.EntityEventOptions,
     ): (arg: EntityHitEntityAfterEvent) => void;
   }
   interface EntityHurtAfterEventSignal {
     subscribe(
       callback: (arg: EntityHurtAfterEvent) => void,
-      options?: $EntityEventOptions,
+      options?: ShulkerInternal.EntityEventOptions,
     ): (arg: EntityHurtAfterEvent) => void;
   }
   interface EntityRemoveAfterEventSignal {
     subscribe(
       callback: (arg: EntityRemoveAfterEvent) => void,
-      options?: $EntityEventOptions,
+      options?: ShulkerInternal.EntityEventOptions,
     ): (arg: EntityRemoveAfterEvent) => void;
   }
 
-  // item.d.ts
-  type ItemComponents = {
-    "minecraft:cooldown": ItemCooldownComponent;
-    "minecraft:durability": ItemDurabilityComponent;
-    "minecraft:enchantable": ItemEnchantableComponent;
-    "minecraft:food": ItemFoodComponent;
-  };
   interface ItemStack {
-    // TODO: constructor
-    // new (item: $ItemTypes, count?: number, asdf?: boolean): ItemStack;
-    getComponent<K extends keyof ItemComponents>(component: K): ItemComponents[K];
-    getTags(): ItemTag[];
-    hasComponent<K extends keyof ItemComponents>(component: K): boolean;
-    hasTag(tag: ItemTag): boolean;
-    matches<T extends keyof BlockStateMapping, K = keyof BlockStateMapping[T], U extends K = K>(
+    getComponent<K extends keyof ShulkerInternal.ItemComponents>(
+      component: K,
+    ): ShulkerInternal.ItemComponents[K];
+    getTags(): bedrockts.ItemTag[];
+    hasComponent<K extends keyof ShulkerInternal.ItemComponents>(component: K): boolean;
+    hasTag(tag: bedrockts.ItemTag): boolean;
+    matches<T extends keyof vanilla.BlockStateMapping>(
       blockName: T,
-      states?: U,
+      states?: vanilla.BlockStateMapping[T],
     ): boolean;
-    setCanDestroy(blockIdentifiers?: $BlockTypes[]): void;
-    setCanPlaceOn(blockIdentifiers?: $BlockTypes[]): void;
+    setCanDestroy(blockIdentifiers?: ShulkerInternal.BlockTypes[]): void;
+    setCanPlaceOn(blockIdentifiers?: ShulkerInternal.BlockTypes[]): void;
   }
 
   interface ItemCooldownComponent {
-    isCooldownCategory(category: $CooldownCategoryTypes): boolean;
+    isCooldownCategory(category: ShulkerInternal.CooldownCategoryTypes): boolean;
   }
 
-  // player.d.ts
-  type PlayerComponents = EntityComponents & {
-    "minecraft:cursor_inventory": PlayerCursorInventoryComponent;
-  };
   interface Player {
-    getComponent<K extends keyof PlayerComponents>(component: K): PlayerComponents[K];
-    hasComponent<K extends keyof PlayerComponents>(component: K): boolean;
-    getItemCooldown(cooldownCategory: $CooldownCategoryTypes): number;
-    startItemCooldown(cooldownCategory: $CooldownCategoryTypes, duration: number): void;
-    playMusic(trackId: SoundDefinitionIdentifier, musicOptions?: MusicOptions): void;
-    playSound(soundId: SoundDefinitionIdentifier, soundOptions?: PlayerSoundOptions): void;
-    queueMusic(trackId: SoundDefinitionIdentifier, musicOptions?: MusicOptions): void;
+    getComponent<K extends keyof ShulkerInternal.PlayerComponents>(
+      component: K,
+    ): ShulkerInternal.PlayerComponents[K];
+    hasComponent<K extends keyof ShulkerInternal.PlayerComponents>(component: K): boolean;
+    getItemCooldown(cooldownCategory: ShulkerInternal.CooldownCategoryTypes): number;
+    startItemCooldown(
+      cooldownCategory: ShulkerInternal.CooldownCategoryTypes,
+      duration: number,
+    ): void;
+    playMusic(trackId: bedrockts.SoundDefinitionIdentifier, musicOptions?: MusicOptions): void;
+    playSound(
+      soundId: bedrockts.SoundDefinitionIdentifier,
+      soundOptions?: PlayerSoundOptions,
+    ): void;
+    queueMusic(trackId: bedrockts.SoundDefinitionIdentifier, musicOptions?: MusicOptions): void;
   }
 
-  // world.d.ts
   interface World {
-    getDimension(dimensionId: $DimensionTypes): Dimension;
-    playMusic(trackId: SoundDefinitionIdentifier, musicOptions?: MusicOptions): void;
+    getDimension(dimensionId: ShulkerInternal.DimensionTypes): Dimension;
+    playMusic(trackId: bedrockts.SoundDefinitionIdentifier, musicOptions?: MusicOptions): void;
     playSound(
-      soundId: SoundDefinitionIdentifier,
+      soundId: bedrockts.SoundDefinitionIdentifier,
       location: Vector3,
       soundOptions?: WorldSoundOptions,
     ): void;
