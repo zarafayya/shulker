@@ -139,6 +139,7 @@ declare namespace ShulkerInternal {
     "minecraft:wants_jockey": server.EntityWantsJockeyComponent;
   };
   type ItemComponents = {
+    "minecraft:compostable": server.ItemCompostableComponent;
     "minecraft:cooldown": server.ItemCooldownComponent;
     "minecraft:durability": server.ItemDurabilityComponent;
     "minecraft:enchantable": server.ItemEnchantableComponent;
@@ -232,7 +233,8 @@ declare module "@minecraft/server" {
         | CameraSetFacingOptions
         | CameraSetLocationOptions
         | CameraSetPosOptions
-        | CameraSetRotOptions,
+        | CameraSetRotOptions
+        | CameraTargetOptions,
     ): void;
   }
 
