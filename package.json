@@ -13,11 +13,11 @@
     "server-ui.d.ts"
   ],
   "peerDependencies": {
-    "@minecraft/server": "^1.16.0",
+    "@minecraft/server": "^1.17.0",
     "@minecraft/server-ui": "^1.3.0"
   },
   "dependencies": {
-    "@minecraft/vanilla-data": "^1.21.44",
+    "@minecraft/vanilla-data": "^1.21.60",
     "bedrock-ts": "^0.6.0"
   },
   "devDependencies": {
