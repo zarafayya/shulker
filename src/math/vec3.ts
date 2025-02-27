@@ -180,6 +180,33 @@ export class Vec3 implements Vector3 {
     return new Vec3(Math.floor(this.x), Math.floor(this.y), Math.floor(this.z));
   }
 
+  /**
+   * Returns a new vector object with the ceiling value of each axis of the current vector.
+   *
+   * @returns A new vector object with the ceiling value of each axis.
+   */
+  ceil(): Vec3 {
+    return new Vec3(Math.ceil(this.x), Math.ceil(this.y), Math.ceil(this.z));
+  }
+
+  /**
+   * Returns a new vector object with the rounded value of each axis of the current vector.
+   *
+   * @returns A new vector object with the rounded value of each axis.
+   */
+  round(): Vec3 {
+    return new Vec3(Math.round(this.x), Math.round(this.y), Math.round(this.z));
+  }
+
+  /**
+   * Returns a new vector object with the center value of each axis of the current vector.
+   *
+   * @returns A new vector object with the center value of each axis.
+   */
+  center(): Vec3 {
+    return this.floor().add(new Vec3(0.5, 0.5, 0.5));
+  }
+
   toString(options?: { decimals?: number; delimiter?: string }): string {
     const decimals = options?.decimals ?? 2;
     const delimiter = options?.delimiter ?? " ";

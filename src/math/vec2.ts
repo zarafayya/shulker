@@ -143,6 +143,33 @@ export class Vec2 implements Vector2 {
     return new Vec2(Math.floor(this.x), Math.floor(this.y));
   }
 
+  /**
+   * Returns a new vector object with the ceil value of each axis of the current vector.
+   *
+   * @returns A new vector object with the ceil value of each axis.
+   */
+  ceil(): Vec2 {
+    return new Vec2(Math.ceil(this.x), Math.ceil(this.y));
+  }
+
+  /**
+   * Returns a new vector object with the round value of each axis of the current vector.
+   *
+   * @returns A new vector object with the round value of each axis.
+   */
+  round(): Vec2 {
+    return new Vec2(Math.round(this.x), Math.round(this.y));
+  }
+
+  /**
+   * Returns a new vector object with the center value of each axis of the current vector.
+   *
+   * @returns A new vector object with the center value of each axis.
+   */
+  center(): Vec2 {
+    return this.floor().add(new Vec2(0.5, 0.5));
+  }
+
   toString(options?: { decimals?: number; delimiter?: string }): string {
     const decimals = options?.decimals ?? 2;
     const delimiter = options?.delimiter ?? " ";
