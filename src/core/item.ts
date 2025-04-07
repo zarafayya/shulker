@@ -14,6 +14,9 @@ import { getAllPlayers } from "../utils/players.js";
 
 export type ScriptItem = {
   readonly identifier: string;
+  readonly isMainHand: string;
+  readonly isOffHand: string;
+  readonly isHelmet: string;
   /**
    * Called every tick
    */
@@ -38,6 +41,10 @@ export type ScriptItem = {
    * Called when player hits an entity with this item
    */
   onHit?(event: ScriptItemHitEvent): void;
+  /**
+   * Called when player hits an entity while having this item in any EquipmentSlot
+   */
+  onEquipHit?(event: ScriptItemHitEvent): void;
   /**
    * Called when player kills an entity with this item
    */
@@ -162,15 +169,27 @@ export const ScriptItem = {
       if (!(damagingEntity instanceof Player)) {
         return;
       }
-      const equipment = getEquipment(damagingEntity, EquipmentSlot.Mainhand);
-      if (!equipment) {
-        return;
+      const currentEquipments = [];
+      for (const slot of equipmentSlots) {
+        currentEquipments.push(getEquipment(damagingEntity, slot));
       }
-      items.get(equipment.typeId)?.onHit?.({
-        player: damagingEntity,
-        itemStack: equipment,
-        victim: hitEntity,
-      });
+      for (let i = 0; i < equipmentSlots.length; i++) {
+        const current = currentEquipments[i];
+        if (current) {
+          items.get(current.typeId)?.onEquipHit?.({
+            player: damagingEntity,
+            itemStack: current,
+            victim: hitEntity,
+          });
+          if (equipmentSlots[i] === EquipmentSlot.Mainhand) {
+            items.get(current.typeId)?.onHit?.({
+              player: damagingEntity,
+              itemStack: current,
+              victim: hitEntity,
+            });
+          }
+        }
+      }
     });
 
     world.afterEvents.entityDie.subscribe(({ damageSource, deadEntity }) => {
