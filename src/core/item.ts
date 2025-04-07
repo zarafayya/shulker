@@ -270,6 +270,7 @@ export const ScriptItem = {
             if (item.canBlock && isBlocked) {
               appliedHealRatio = Math.max(appliedHealRatio, blockOptions.healRatio ?? 0);
               appliedKnockbackPower = Math.max(appliedKnockbackPower, blockOptions.knockbackPower ?? 0);
+              hurtEntity.teleport(hurtEntity.location);
               hurtEntity.playSound(blockOptions.soundId, blockOptions.soundOptions);
               item.onBlock?.({
                 player: hurtEntity,
