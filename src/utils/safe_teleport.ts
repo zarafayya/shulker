@@ -38,8 +38,8 @@ const safeTeleportJob = (
  * @param entity The entity to be teleported.
  * @param location The location to check for empty space.
  * @param teleportOptions Options for teleporting the entity.
- * @param iteration The maximum number of iterations to check for empty space. Default is 1000.
- * @param persistent If true, the job will continue to run until it finds an empty space for a number of iteration. Default is false.
+ * @param iteration The maximum number of iterations to check for active chunk. Default is 1000.
+ * @param persistent If true, the job will continue to run until it confirms that it is an active chunk for a number of iteration. Default is false.
  */
 export const safeTeleport = (
   entity: Entity,
